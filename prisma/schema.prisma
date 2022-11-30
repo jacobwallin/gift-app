@@ -14,10 +14,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Gift {
+  id              String   @id @default(cuid())
+  name            String
+  image           String?
+  link            String?
+  notes           String?
+  userId          String
+  user            User     @relation("Gifts", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  deletedAt       DateTime?
+  claimedByUserId String?
+  claimedBy       User?     @relation("Claimed Gifts", fields: [claimedByUserId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -55,6 +64,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  gifts         Gift[] @relation("Gifts")
+  claimedGifts  Gift[] @relation("Claimed Gifts")
 }
 
 model VerificationToken {
