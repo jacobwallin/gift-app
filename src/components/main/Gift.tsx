@@ -1,3 +1,3 @@
 export default function Gift() {
-  return <div>this is a gift</div>;
+  return <div>.</div>;
 }
