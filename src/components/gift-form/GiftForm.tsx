@@ -121,8 +121,8 @@ export default function GiftForm(props: Props) {
         initialValues={initialValues}
         validationSchema={Yup.object({
           link: Yup.string().url(),
-          name: Yup.string().required("Required"),
-          notes: Yup.string(),
+          name: Yup.string().max(100).required("Required"),
+          notes: Yup.string().max(100),
           image: Yup.string(),
         })}
         onSubmit={(values) => submitForm(values)}
@@ -137,7 +137,7 @@ export default function GiftForm(props: Props) {
             type="text"
             placeholder=""
             fetchMetadata={fetchMetadata}
-            disabled={getMetadata.isLoading}
+            disabled={getMetadata.isLoading || loading}
           />
           <TextInput
             label="Item Name"
@@ -145,7 +145,7 @@ export default function GiftForm(props: Props) {
             id="name"
             type="text"
             placeholder=""
-            disabled={getMetadata.isLoading}
+            disabled={getMetadata.isLoading || loading}
           />
           <TextInput
             label="Notes"
@@ -154,7 +154,7 @@ export default function GiftForm(props: Props) {
             type="text"
             placeholder=""
             note="(item sizing, or other details)"
-            disabled={getMetadata.isLoading}
+            disabled={getMetadata.isLoading || loading}
           />
           <label className="text-md mb-1 text-[#444]">Image</label>
           <div
@@ -201,7 +201,7 @@ export default function GiftForm(props: Props) {
                 accept={".png, .jpg, .jpeg"}
                 onChange={handleOnChangePicture}
                 className="hidden"
-                disabled={getMetadata.isLoading}
+                disabled={getMetadata.isLoading || loading}
               />
             </div>
           </div>

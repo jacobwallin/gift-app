@@ -6,11 +6,12 @@ import PencilIcon from "../../../public/pencil-3.png";
 interface LabelCustomProps {
   label: string;
   note?: string;
+  disabled?: boolean;
 }
 
 export const TextInput: React.FC<
   FieldHookConfig<string> & LabelCustomProps
-> = ({ label, note, ...props }) => {
+> = ({ label, note, disabled, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
@@ -26,8 +27,9 @@ export const TextInput: React.FC<
       </label>
       <input
         autoComplete="off"
-        className="h-[35px] w-[300px] rounded-sm  border border-[#444] p-2 text-sm"
+        className="h-[35px] w-[300px] rounded-sm  border border-[#444] p-2 text-sm disabled:border-[#999] disabled:text-[#999]"
         {...field}
+        disabled={disabled}
       />
       {note && <div className="mt-1 text-xs text-[#999]">{note}</div>}
       {meta.touched && meta.error ? (
@@ -37,15 +39,13 @@ export const TextInput: React.FC<
   );
 };
 
-interface UrlInputCustomProps {
-  label: string;
-  note?: string;
+interface UrlInputCustomProps extends LabelCustomProps {
   fetchMetadata: (url: string) => void;
 }
 
 export const UrlInput: React.FC<
   FieldHookConfig<string> & UrlInputCustomProps
-> = ({ label, note, ...props }) => {
+> = ({ label, note, disabled, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
@@ -60,20 +60,23 @@ export const UrlInput: React.FC<
         >
           {label}
         </label>
-        <div
-          className="itens-center mb-1 flex cursor-pointer justify-center gap-1 rounded-md bg-gray-400 py-1 px-3 text-sm text-white hover:bg-gray-500"
+        <button
+          className="itens-center mb-1 flex cursor-pointer justify-center gap-1 rounded-md bg-[#bbb] py-1 px-3 text-sm text-white enabled:hover:bg-[#999] disabled:cursor-default"
           onClick={() => props.fetchMetadata(field.value)}
+          type="button"
+          disabled={meta.error !== undefined || meta.value === ""}
         >
           <div className="relative h-[18px] w-[18px]">
             <Image src={PencilIcon} fill alt="autofill" />
           </div>
           <span>Auto-Fill</span>
-        </div>
+        </button>
       </div>
       <input
         autoComplete="off"
-        className="h-[35px] w-[300px] rounded-sm border border-[#444] p-2 text-sm"
+        className="h-[35px] w-[300px] rounded-sm border border-[#444] p-2 text-sm disabled:border-[#999] disabled:text-[#999]"
         {...field}
+        disabled={disabled}
       />
       {note && <div className="mt-1 text-xs text-[#999]">{note}</div>}
       {meta.touched && meta.error ? (

@@ -3,6 +3,7 @@ import { RouterOutputs } from "../../utils/trpc";
 import Image from "next/image";
 import GiftIcon from "../../../public/gift.png";
 import PlusIcon from "../../../public/delete.svg";
+import CloseIcon from "../../../public/close.svg";
 import { giftRouter } from "../../server/trpc/router/gifts";
 
 interface Props {
@@ -19,16 +20,20 @@ export default function Gift(props: Props) {
         <h1 className="text-xl font-medium">View Gift</h1>
         <button
           onClick={closeView}
-          className=" h-[35px] w-[35px] rounded-md bg-[#ddd] hover:bg-[#bbb]"
+          className=" flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#bbb] hover:bg-[#999]"
         >
-          x
+          <Image src={CloseIcon} width={18} height={18} alt="close" />
         </button>
       </div>
 
       <div className="flex flex-row gap-4">
         <div className="relative flex h-[200px] w-[200px] items-center justify-center overflow-hidden rounded-md border border-[#ddd]">
           {gift.image ? (
-            <img src={gift.image} alt="gift-image" className="object-cover" />
+            <img
+              src={gift.image}
+              alt="gift-image"
+              className="h-full w-full object-cover"
+            />
           ) : (
             <Image src={GiftIcon} width={50} height={50} alt="gift-image" />
           )}
