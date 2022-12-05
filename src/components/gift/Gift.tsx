@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { RouterOutputs } from "../../utils/trpc";
 import Image from "next/image";
+import GiftIcon from "../../../public/gift.png";
 import PlusIcon from "../../../public/delete.svg";
 import { giftRouter } from "../../server/trpc/router/gifts";
 
@@ -12,6 +13,7 @@ interface Props {
 
 export default function Gift(props: Props) {
   const { gift, closeView, deleteGift } = props;
+  console.log(gift);
   return (
     <div>
       <div className="mb-8 flex flex-row justify-between">
@@ -25,8 +27,17 @@ export default function Gift(props: Props) {
       </div>
 
       <div className="flex flex-row gap-4">
-        <div className="h-[200px] w-[200px] rounded-md border border-[#ddd]">
-          image
+        <div className="relative flex h-[200px] w-[200px] items-center justify-center overflow-hidden rounded-md border border-[#ddd]">
+          {gift.image ? (
+            <Image
+              src={gift.image}
+              fill
+              alt="gift-image"
+              className="object-cover"
+            />
+          ) : (
+            <Image src={GiftIcon} width={50} height={50} alt="gift-image" />
+          )}
         </div>
         <div className="relative grow">
           <div className="mb-2 text-lg">{gift.name}</div>

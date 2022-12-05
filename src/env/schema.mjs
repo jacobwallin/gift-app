@@ -21,6 +21,9 @@ export const serverSchema = z.object({
   ),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
+  SUPABASE_URL: z.string(),
+  SUPABASE_KEY: z.string(),
+  SUPABASE_BUCKET: z.string(),
 });
 
 /**

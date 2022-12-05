@@ -48,6 +48,7 @@ export default function MyGifts() {
     setSelectedGift(undefined);
   }
   function addGift(values: FormValues) {
+    console.log("adding gift: ", values);
     mutation.mutate(values);
   }
   function deleteGift(giftId: string) {
