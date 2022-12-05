@@ -8,19 +8,22 @@ import { RouterOutputs } from "../../utils/trpc";
 import PlusIcon from "../../../public/plus-icon.svg";
 import Image from "next/image";
 
+const initialValues = {
+  link: "",
+  name: "",
+  notes: "",
+  image: "",
+  imageUrl: "",
+};
+
 export default function MyGifts() {
   const [showForm, setShowForm] = useState(false);
   const giftsQuery = trpc.gifts.getAll.useQuery();
   const mutation = trpc.gifts.create.useMutation();
   const deleteMutation = trpc.gifts.delete.useMutation();
 
-  const [initialFormValues, setInitialFormValues] = useState<FormValues>({
-    link: "",
-    name: "",
-    notes: "",
-    image: "",
-    imageUrl: "",
-  });
+  const [initialFormValues, setInitialFormValues] =
+    useState<FormValues>(initialValues);
   const [gifts, setGifts] = useState<RouterOutputs["gifts"]["getAll"]>([]);
   const [selectedGift, setSelectedGift] = useState<
     RouterOutputs["gifts"]["create"] | undefined
@@ -47,6 +50,9 @@ export default function MyGifts() {
 
   function toggleForm() {
     setShowForm(!showForm);
+    if (showForm) {
+      setInitialFormValues(initialValues);
+    }
   }
   function viewGift(gift: RouterOutputs["gifts"]["create"]) {
     setSelectedGift(gift);
