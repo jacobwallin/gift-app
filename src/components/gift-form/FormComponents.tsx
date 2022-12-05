@@ -22,6 +22,7 @@ export const TextInput: React.FC<
         {label}
       </label>
       <input
+        autoComplete="off"
         className="h-[35px] w-[300px] rounded-sm  border border-[#444] p-2"
         {...field}
       />

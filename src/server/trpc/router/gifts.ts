@@ -4,6 +4,8 @@ import { nanoid } from "nanoid";
 import { decode } from "base64-arraybuffer";
 import { router, protectedProcedure } from "../trpc";
 import { env } from "../../../env/server.mjs";
+import axios from "axios";
+import metascraper from "metascraper";
 
 const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
 
@@ -22,6 +24,17 @@ export const giftRouter = router({
       orderBy: { createdAt: "asc" },
     });
   }),
+  getMetadata: protectedProcedure
+    .input(
+      z.object({
+        url: z.string().url(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const webpage = await axios.get(input.url);
+
+      // return metascraper(["metascraper-author"])()
+    }),
   create: protectedProcedure
     .input(
       z.object({
