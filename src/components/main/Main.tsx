@@ -1,54 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { trpc } from "../../utils/trpc";
-import Gift from "./Gift";
-import GiftForm from "../gift-form/GiftForm";
-import { FormValues } from "../gift-form/GiftForm";
+import MyGifts from "../my-gifts/MyGifts";
+
+type Views = "MY_GIFTS" | "FRIEND_GIFTS";
 
 export default function Main() {
   const { data: sessionData } = useSession();
-  const mutation = trpc.gifts.create.useMutation();
 
   const [selectedUserId, setSelectedUserId] = useState(
     sessionData?.user?.id ?? ""
   );
-  const [showForm, setShowForm] = useState(true);
-
-  function toggleForm() {
-    setShowForm(!showForm);
-  }
-
-  function addGift(values: FormValues) {
-    console.log("hehehs");
-    mutation.mutate(values);
-  }
+  const [selectedView, setSelectedView] = useState<Views>("MY_GIFTS");
 
   return (
     <div className="mt-20 flex justify-center gap-5">
-      <div className=" flex min-h-[400px] w-[200px] flex-col rounded-lg bg-white p-4 shadow-md">
-        <div className="text-xl">My List</div>
+      <div className=" flex min-h-[400px] w-[200px] flex-col gap-2 divide-y rounded-lg bg-white p-4 shadow-md">
+        <div
+          className={`cursor-pointer rounded-md px-3 py-1 text-xl hover:bg-[#6C8CAC] hover:text-white ${
+            selectedView === "MY_GIFTS" && "bg-[#6C8CAC] text-white"
+          }`}
+        >
+          My List
+        </div>
         <div>Family Lists</div>
       </div>
-      <div className="flex h-[50px] w-[700px] flex-col gap-4">
-        {showForm && (
-          <GiftForm
-            close={toggleForm}
-            submit={addGift}
-            loading={mutation.isLoading}
-          />
-        )}
-        {!showForm && (
-          <>
-            <div className="border-1 border-gray flex h-[50px] w-full flex-col rounded-lg bg-white shadow-md">
-              <button onClick={toggleForm}>Add gift</button>
-            </div>
-            <div className="border-1 border-gray flex w-full flex-col rounded-lg bg-white shadow-md">
-              <Gift />
-              <Gift />
-              <Gift />
-            </div>
-          </>
-        )}
+      <div className=" w-[700px] rounded-lg bg-white p-4 shadow-md">
+        {selectedView === "MY_GIFTS" && <MyGifts />}
       </div>
     </div>
   );

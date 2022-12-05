@@ -24,12 +24,12 @@ export default function GiftForm(props: Props) {
     image: "",
   };
   return (
-    <div className="h-[700px] w-full rounded-lg bg-white p-4 shadow-md">
+    <>
       <div className="mb-6 flex justify-between">
-        <h1 className="text-lg font-medium">Add To Your Wish List</h1>
+        <h1 className="text-xl font-medium">Add To Your Wish List</h1>
         <button
           onClick={close}
-          className=" h-[30px] w-[30px] rounded-md bg-[#ddd] hover:bg-[#bbb]"
+          className=" h-[35px] w-[35px] rounded-md bg-[#ddd] hover:bg-[#bbb]"
         >
           x
         </button>
@@ -38,10 +38,11 @@ export default function GiftForm(props: Props) {
         initialValues={initialValues}
         validationSchema={Yup.object({
           link: Yup.string().url(),
-          itemName: Yup.string().required("Required"),
+          name: Yup.string().required("Required"),
           notes: Yup.string(),
+          image: Yup.string(),
         })}
-        onSubmit={(values) => alert("hi")}
+        onSubmit={(values) => submit(values)}
       >
         <Form className="flex flex-col">
           <TextInput
@@ -66,6 +67,7 @@ export default function GiftForm(props: Props) {
             placeholder=""
             note="(item sizing, or other details)"
           />
+
           <button
             type="submit"
             disabled={loading}
@@ -75,6 +77,6 @@ export default function GiftForm(props: Props) {
           </button>
         </Form>
       </Formik>
-    </div>
+    </>
   );
 }
