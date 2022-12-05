@@ -15,7 +15,7 @@ export default function Main() {
 
   return (
     <div className="mt-20 flex justify-center gap-5">
-      <div className=" flex min-h-[400px] w-[200px] flex-col gap-2 divide-y rounded-lg bg-white p-4 shadow-md">
+      <div className=" flex h-min w-[200px] flex-col gap-2 divide-y rounded-lg bg-white p-4 shadow-md">
         <div
           className={`cursor-pointer rounded-md px-3 py-1 text-xl hover:bg-[#6C8CAC] hover:text-white ${
             selectedView === "MY_GIFTS" && "bg-[#6C8CAC] text-white"
@@ -25,7 +25,7 @@ export default function Main() {
         </div>
         <div>Family Lists</div>
       </div>
-      <div className=" w-[700px] rounded-lg bg-white p-4 shadow-md">
+      <div className=" h-min w-[700px] rounded-lg bg-white p-4 shadow-md">
         {selectedView === "MY_GIFTS" && <MyGifts />}
       </div>
     </div>
