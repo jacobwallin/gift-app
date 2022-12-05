@@ -27,7 +27,7 @@ export default function Gift(props: Props) {
       </div>
 
       <div className="flex flex-row gap-4">
-        <div className="relative flex min-h-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-md border border-[#ddd]">
+        <div className="relative flex h-[200px] min-h-[200px] w-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-md border border-[#ddd]">
           {gift.image ? (
             <img
               src={gift.image}
