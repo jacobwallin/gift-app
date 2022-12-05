@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { trpc } from "../../utils/trpc";
 import MyGifts from "../my-gifts/MyGifts";
 
-type Views = "MY_GIFTS" | "FRIEND_GIFTS";
+type Views = "MY_GIFTS" | "FRIEND_GIFTS" | "PROFILE";
 
 export default function Main() {
   const { data: sessionData } = useSession();
@@ -15,7 +15,14 @@ export default function Main() {
 
   return (
     <div className="mt-20 flex justify-center gap-5">
-      <div className=" flex h-min w-[200px] flex-col gap-2 divide-y rounded-lg bg-white p-4 shadow-md">
+      <div className=" flex h-min w-[250px] flex-col gap-2 divide-y rounded-lg bg-white p-4 shadow-md">
+        <div
+          className={`cursor-pointer rounded-md px-3 py-1 text-xl hover:bg-[#6C8CAC] hover:text-white ${
+            selectedView === "PROFILE" && "bg-[#6C8CAC] text-white"
+          }`}
+        >
+          Profile
+        </div>
         <div
           className={`cursor-pointer rounded-md px-3 py-1 text-xl hover:bg-[#6C8CAC] hover:text-white ${
             selectedView === "MY_GIFTS" && "bg-[#6C8CAC] text-white"
