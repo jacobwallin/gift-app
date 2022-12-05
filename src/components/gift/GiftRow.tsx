@@ -14,9 +14,9 @@ export default function GiftRow(props: Props) {
       className=" flex cursor-pointer gap-4 hover:bg-[#eee]"
       onClick={() => view(gift)}
     >
-      <div className="relative flex h-[75px] w-[75px] items-center justify-center overflow-hidden rounded-sm">
+      <div className="relative my-1 flex h-[75px] w-[75px] items-center justify-center overflow-hidden rounded-sm">
         {gift.image ? (
-          <Image src={gift.image} fill alt="gift" className="object-cover" />
+          <img src={gift.image} alt="gift" className="object-cover" />
         ) : (
           <Image src={GiftIcon} width={24} height={24} alt="gift-image" />
         )}

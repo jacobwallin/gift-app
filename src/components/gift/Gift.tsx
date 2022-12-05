@@ -13,7 +13,6 @@ interface Props {
 
 export default function Gift(props: Props) {
   const { gift, closeView, deleteGift } = props;
-  console.log(gift);
   return (
     <div>
       <div className="mb-8 flex flex-row justify-between">
@@ -29,12 +28,7 @@ export default function Gift(props: Props) {
       <div className="flex flex-row gap-4">
         <div className="relative flex h-[200px] w-[200px] items-center justify-center overflow-hidden rounded-md border border-[#ddd]">
           {gift.image ? (
-            <Image
-              src={gift.image}
-              fill
-              alt="gift-image"
-              className="object-cover"
-            />
+            <img src={gift.image} alt="gift-image" className="object-cover" />
           ) : (
             <Image src={GiftIcon} width={50} height={50} alt="gift-image" />
           )}

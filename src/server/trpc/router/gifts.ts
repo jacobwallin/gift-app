@@ -4,8 +4,8 @@ import { nanoid } from "nanoid";
 import { decode } from "base64-arraybuffer";
 import { router, protectedProcedure } from "../trpc";
 import { env } from "../../../env/server.mjs";
-import axios from "axios";
-import metascraper from "metascraper";
+import metascraper from "metadata-scraper";
+import puppeteer from "puppeteer";
 
 const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
 
@@ -30,10 +30,15 @@ export const giftRouter = router({
         url: z.string().url(),
       })
     )
-    .query(async ({ input, ctx }) => {
-      const webpage = await axios.get(input.url);
-
-      // return metascraper(["metascraper-author"])()
+    .mutation(async ({ input, ctx }) => {
+      const browser = await puppeteer.launch();
+      const page = await browser.newPage();
+      page.setUserAgent(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0"
+      );
+      await page.goto(input.url, { waitUntil: "domcontentloaded" });
+      const pageContent = await page.content();
+      return metascraper({ url: input.url, html: pageContent });
     }),
   create: protectedProcedure
     .input(

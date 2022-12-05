@@ -14,6 +14,13 @@ export default function MyGifts() {
   const mutation = trpc.gifts.create.useMutation();
   const deleteMutation = trpc.gifts.delete.useMutation();
 
+  const [initialFormValues, setInitialFormValues] = useState<FormValues>({
+    link: "",
+    name: "",
+    notes: "",
+    image: "",
+    imageUrl: "",
+  });
   const [gifts, setGifts] = useState<RouterOutputs["gifts"]["getAll"]>([]);
   const [selectedGift, setSelectedGift] = useState<
     RouterOutputs["gifts"]["create"] | undefined
@@ -48,7 +55,6 @@ export default function MyGifts() {
     setSelectedGift(undefined);
   }
   function addGift(values: FormValues) {
-    console.log("adding gift: ", values);
     mutation.mutate(values);
   }
   function deleteGift(giftId: string) {
@@ -62,6 +68,8 @@ export default function MyGifts() {
           close={toggleForm}
           submit={addGift}
           loading={mutation.isLoading}
+          initialValues={initialFormValues}
+          setInitialValues={setInitialFormValues}
         />
       )}
       {!showForm && (

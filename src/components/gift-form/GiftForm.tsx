@@ -1,32 +1,41 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { trpc } from "../../utils/trpc";
 import Image from "next/image";
 import CloseIcon from "../../../public/close.svg";
 import UploadIcon from "../../../public/upload-white.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { TextInput } from "./FormComponents";
+import { TextInput, UrlInput } from "./FormComponents";
 
 export interface FormValues {
   link: string;
   name: string;
   notes: string;
   image: string;
+  imageUrl: string;
 }
 
 interface Props {
   close: () => void;
   submit: (values: FormValues) => void;
   loading: boolean;
+  initialValues: FormValues;
+  setInitialValues: (values: FormValues) => void;
 }
 
 export default function GiftForm(props: Props) {
-  const { close, submit, loading } = props;
+  const { close, submit, loading, initialValues, setInitialValues } = props;
+  const { imageUrl } = initialValues;
 
-  const pictureRef = useRef();
+  const getMetadata = trpc.gifts.getMetadata.useMutation();
 
-  const [image, setImage] = useState<string | ArrayBuffer | null>(null);
+  const pictureRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef(null);
+
+  const [image, setImage] = useState<string | null>(null);
   const [imageAlt, setImageAlt] = useState("");
   const [imageError, setImageError] = useState("");
+  const [metaData, setMetaData] = useState(undefined);
 
   const handleOnChangePicture = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : undefined;
@@ -38,8 +47,10 @@ export default function GiftForm(props: Props) {
       "load",
       async function () {
         try {
-          setImage(reader.result);
-          setImageAlt(fileName);
+          if (typeof reader.result === "string") {
+            setImage(reader.result);
+            setImageAlt(fileName);
+          }
         } catch (err) {
           setImageError("Unable to update image");
         } finally {
@@ -53,7 +64,7 @@ export default function GiftForm(props: Props) {
       // 10mb size limit
       if (file.size <= 10 * 1024 * 1024) {
         // setUpdatingPicture(true);
-        // setPictureError("");
+        setImageError("");
         reader.readAsDataURL(file);
       } else {
         setImageError("File size exceeds 10MB.");
@@ -67,6 +78,26 @@ export default function GiftForm(props: Props) {
     }
   };
 
+  function fetchMetadata(url: string) {
+    getMetadata.mutate({ url });
+  }
+
+  useEffect(() => {
+    if (getMetadata.status === "success") {
+      const name = getMetadata.data.title || "";
+      const link = getMetadata.data.url || "";
+      const imageUrl = getMetadata.data.image || "";
+      // remove user's image if it exists
+      setImage(null);
+      setInitialValues({
+        ...initialValues,
+        name,
+        link,
+        imageUrl,
+      });
+    }
+  }, [getMetadata.status]);
+
   function submitForm(values: FormValues) {
     if (image && typeof image === "string") {
       submit({ ...values, image: image });
@@ -75,12 +106,6 @@ export default function GiftForm(props: Props) {
     }
   }
 
-  const initialValues: FormValues = {
-    link: "",
-    name: "",
-    notes: "",
-    image: "",
-  };
   return (
     <>
       <div className="mb-6 flex justify-between">
@@ -101,14 +126,18 @@ export default function GiftForm(props: Props) {
           image: Yup.string(),
         })}
         onSubmit={(values) => submitForm(values)}
+        innerRef={formRef}
+        enableReinitialize
       >
         <Form className="flex flex-col">
-          <TextInput
+          <UrlInput
             label="Link"
             name="link"
             id="link"
             type="text"
             placeholder=""
+            fetchMetadata={fetchMetadata}
+            disabled={getMetadata.isLoading}
           />
           <TextInput
             label="Item Name"
@@ -116,6 +145,7 @@ export default function GiftForm(props: Props) {
             id="name"
             type="text"
             placeholder=""
+            disabled={getMetadata.isLoading}
           />
           <TextInput
             label="Notes"
@@ -124,6 +154,7 @@ export default function GiftForm(props: Props) {
             type="text"
             placeholder=""
             note="(item sizing, or other details)"
+            disabled={getMetadata.isLoading}
           />
           <label className="text-md mb-1 text-[#444]">Image</label>
           <div
@@ -131,7 +162,7 @@ export default function GiftForm(props: Props) {
             onClick={handleOnClickPicture}
             className={` aspect-w-16 aspect-h-9 group relative flex h-[250px] w-[250px] cursor-pointer flex-col justify-center overflow-hidden rounded-md transition focus:outline-none disabled:cursor-not-allowed disabled:opacity-50
           ${
-            image
+            image || imageUrl !== ""
               ? "hover:opacity-50 disabled:hover:opacity-100"
               : "border-2 border-dashed hover:border-gray-400 focus:border-gray-400 disabled:hover:border-gray-200"
           }`}
@@ -144,9 +175,12 @@ export default function GiftForm(props: Props) {
                 objectFit={"cover"}
               />
             ) : null}
+            {imageUrl !== "" && !image ? (
+              <img src={imageUrl} alt={imageAlt ?? ""} />
+            ) : null}
 
             <div className="flex items-center justify-center">
-              {!image ? (
+              {!image && imageUrl === "" ? (
                 <div className="flex flex-col items-center space-y-2">
                   <div className="shrink-0 rounded-full bg-[#bbb] p-2 transition group-hover:scale-110 group-focus:scale-110">
                     <Image
@@ -167,6 +201,7 @@ export default function GiftForm(props: Props) {
                 accept={".png, .jpg, .jpeg"}
                 onChange={handleOnChangePicture}
                 className="hidden"
+                disabled={getMetadata.isLoading}
               />
             </div>
           </div>
