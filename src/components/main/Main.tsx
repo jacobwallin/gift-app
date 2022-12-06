@@ -41,8 +41,8 @@ export default function Main() {
         <div
           className={`cursor-pointer rounded-md px-3 py-1 text-xl ${
             selectedView === "MY_LIST"
-              ? "bg-[#6C8CAC] text-white "
-              : "hover:bg-[#6C8CAC] hover:text-white"
+              ? "bg-[#86A6C6] text-white "
+              : "hover:bg-[#ddd]"
           }`}
           onClick={() => selectMyList()}
         >
@@ -51,8 +51,8 @@ export default function Main() {
         <div
           className={`cursor-pointer rounded-md px-3 py-1 text-xl ${
             selectedView === "MY_GIFTS"
-              ? "bg-[#6C8CAC] text-white "
-              : "hover:bg-[#6C8CAC] hover:text-white"
+              ? "bg-[#86A6C6] text-white "
+              : "hover:bg-[#ddd] "
           }`}
           onClick={() => selectMyGifts()}
         >
@@ -101,8 +101,8 @@ function UserListMenuItems(props: UserListMenuItemProps) {
             onClick={() => selectFriendsGiftList(user.id, userShortName || "")}
             className={`flex cursor-pointer items-center justify-start gap-2 rounded-md px-3 py-1 text-xl ${
               selectedUserId === user.id
-                ? "bg-[#6C8CAC] text-white "
-                : "hover:bg-[#6C8CAC] hover:text-white"
+                ? "bg-[#86A6C6] text-white "
+                : "h hover:bg-[#ddd]"
             }`}
           >
             {user.image && (
