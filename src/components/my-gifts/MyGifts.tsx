@@ -101,7 +101,14 @@ export default function MyGifts() {
               </div>
               <div className="flex flex-col items-center divide-y">
                 {gifts.map((gift) => {
-                  return <GiftRow key={gift.id} gift={gift} view={viewGift} />;
+                  return (
+                    <GiftRow
+                      key={gift.id}
+                      gift={gift}
+                      view={viewGift}
+                      hideStatus
+                    />
+                  );
                 })}
                 {gifts.length === 0 && (
                   <div className="text-[#999]">

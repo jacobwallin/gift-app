@@ -50,8 +50,9 @@ export const giftRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      return ctx.prisma.gift.update({
-        where: { id: input.giftId },
+      // can only claim gifts if claimedByUserId is currently null
+      return ctx.prisma.gift.updateMany({
+        where: { id: input.giftId, claimedByUserId: null },
         data: {
           claimedByUserId: ctx.session.user.id,
         },
@@ -64,6 +65,7 @@ export const giftRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      // can only release gifts that have been claimed by the current session user
       return ctx.prisma.gift.updateMany({
         where: { id: input.giftId, claimedByUserId: ctx.session.user.id },
         data: {

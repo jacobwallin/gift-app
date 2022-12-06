@@ -67,7 +67,7 @@ export default function Gift(props: Props) {
                 <div>Delete Gift</div>
               </button>
             )}
-            {claimGift && gift.claimedByUserId !== sessionData?.user?.id && (
+            {claimGift && gift.claimedByUserId === null && (
               <button
                 onClick={() => claimGift(gift.id)}
                 disabled={loadingClaim}

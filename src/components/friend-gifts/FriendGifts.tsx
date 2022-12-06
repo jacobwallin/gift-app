@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import GiftRow from "../gift/GiftRow";
 import Gift from "../gift/Gift";
 import { trpc } from "../../utils/trpc";
@@ -12,6 +13,7 @@ interface Props {
 
 export default function FriendGifts(props: Props) {
   const { userId, userShortName } = props;
+  const { data: sessionData } = useSession();
   const [showForm, setShowForm] = useState(false);
   const giftsQuery = trpc.gifts.getAllByUser.useQuery({ userId: userId });
   const claimGiftMutation = trpc.gifts.claim.useMutation();
@@ -50,44 +52,48 @@ export default function FriendGifts(props: Props) {
   }
   useEffect(() => {
     if (claimGiftMutation.status === "success") {
-      setGifts(
-        gifts.map((gift) => {
-          if (gift.id === claimedGiftId) {
-            return {
-              ...gift,
-              claimedByUserId: claimGiftMutation.data.claimedByUserId,
-            };
-          }
-          return gift;
-        })
-      );
-      if (selectedGift) {
-        setSelectedGift({
-          ...selectedGift,
-          claimedByUserId: claimGiftMutation.data.claimedByUserId,
-        });
+      if (claimGiftMutation.data.count > 0) {
+        setGifts(
+          gifts.map((gift) => {
+            if (gift.id === claimedGiftId) {
+              return {
+                ...gift,
+                claimedByUserId: sessionData?.user?.id || null,
+              };
+            }
+            return gift;
+          })
+        );
+        if (selectedGift) {
+          setSelectedGift({
+            ...selectedGift,
+            claimedByUserId: sessionData?.user?.id || null,
+          });
+        }
       }
     }
   }, [claimGiftMutation.status, claimedGiftId]);
 
   useEffect(() => {
     if (releaseGiftMutation.status === "success") {
-      setGifts(
-        gifts.map((gift) => {
-          if (gift.id === releasedGiftId) {
-            return {
-              ...gift,
-              claimedByUserId: null,
-            };
-          }
-          return gift;
-        })
-      );
-      if (selectedGift) {
-        setSelectedGift({
-          ...selectedGift,
-          claimedByUserId: null,
-        });
+      if (releaseGiftMutation.data.count > 0) {
+        setGifts(
+          gifts.map((gift) => {
+            if (gift.id === releasedGiftId) {
+              return {
+                ...gift,
+                claimedByUserId: null,
+              };
+            }
+            return gift;
+          })
+        );
+        if (selectedGift) {
+          setSelectedGift({
+            ...selectedGift,
+            claimedByUserId: null,
+          });
+        }
       }
     }
   }, [releaseGiftMutation.status, releasedGiftId]);
@@ -113,7 +119,14 @@ export default function FriendGifts(props: Props) {
             </div>
             <div className="flex flex-col items-center divide-y">
               {gifts.map((gift) => {
-                return <GiftRow key={gift.id} gift={gift} view={viewGift} />;
+                return (
+                  <GiftRow
+                    key={gift.id}
+                    gift={gift}
+                    view={viewGift}
+                    hideStatus={false}
+                  />
+                );
               })}
               {gifts.length === 0 && (
                 <div className="text-[#999]">
