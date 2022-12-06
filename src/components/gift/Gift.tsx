@@ -55,7 +55,19 @@ export default function Gift(props: Props) {
           )}
         </div>
         <div className="relative grow">
-          <div className="mb-0 text-lg">{gift.name}</div>
+          {gift.link && gift.link !== "" ? (
+            <a
+              className="mb-0 text-lg text-[#537393] hover:underline"
+              href={gift.link || ""}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {gift.name}
+            </a>
+          ) : (
+            <div className="mb-0 text-lg">{gift.name}</div>
+          )}
+
           {gift.userId !== sessionData?.user?.id && (
             <>
               {gift.claimedByUserId &&
