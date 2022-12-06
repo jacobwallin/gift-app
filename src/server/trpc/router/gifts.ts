@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 import { decode } from "base64-arraybuffer";
 import { env } from "../../../env/server.mjs";
 import metascraper from "metadata-scraper";
-import puppeteer from "puppeteer";
+import { chromium } from "playwright";
 
 const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
 
@@ -83,11 +83,12 @@ export const giftRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      page.setUserAgent(
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0"
-      );
+      const browser = await chromium.launch();
+      const context = await browser.newContext({
+        userAgent:
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0",
+      });
+      const page = await context.newPage();
       await page.goto(input.url, { waitUntil: "domcontentloaded" });
       const pageContent = await page.content();
       return metascraper({ url: input.url, html: pageContent });
