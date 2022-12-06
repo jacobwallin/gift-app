@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { RouterOutputs } from "../../utils/trpc";
 import Image from "next/image";
 import GiftIcon from "../../../public/gift.png";
 import PlusIcon from "../../../public/delete.svg";
 import CloseIcon from "../../../public/close.svg";
+import CheckIcon from "../../../public/check.svg";
+import ReleaseIcon from "../../../public/release.png";
 import { giftRouter } from "../../server/trpc/router/gifts";
 
 interface Props {
@@ -11,10 +14,14 @@ interface Props {
   closeView: () => void;
   deleteGift?: (giftId: string) => void;
   claimGift?: (giftId: string) => void;
+  releaseGift?: (giftId: string) => void;
+  loadingRelease?: boolean;
+  loadingClaim?: boolean;
 }
 
 export default function Gift(props: Props) {
-  const { gift, closeView, deleteGift } = props;
+  const { data: sessionData } = useSession();
+  const { gift, closeView, deleteGift, claimGift, releaseGift } = props;
   return (
     <div>
       <div className="mb-8 flex flex-row justify-between">
@@ -50,6 +57,24 @@ export default function Gift(props: Props) {
               >
                 <Image src={PlusIcon} width={20} height={20} alt="delete" />
                 <div>Delete Gift</div>
+              </button>
+            )}
+            {claimGift && gift.claimedByUserId !== sessionData?.user?.id && (
+              <button
+                onClick={() => claimGift(gift.id)}
+                className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md  bg-[#81C784] py-1  px-3 text-white hover:bg-[#66BB6A]"
+              >
+                <Image src={CheckIcon} width={20} height={20} alt="delete" />
+                <div>Claim Gift</div>
+              </button>
+            )}
+            {releaseGift && gift.claimedByUserId === sessionData?.user?.id && (
+              <button
+                onClick={() => releaseGift(gift.id)}
+                className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md  bg-red-400 py-1  px-3 text-white hover:bg-red-500"
+              >
+                <Image src={ReleaseIcon} width={20} height={20} alt="delete" />
+                <div>Release Gift</div>
               </button>
             )}
           </div>

@@ -57,6 +57,20 @@ export const giftRouter = router({
         },
       });
     }),
+  release: protectedProcedure
+    .input(
+      z.object({
+        giftId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.gift.updateMany({
+        where: { id: input.giftId, claimedByUserId: ctx.session.user.id },
+        data: {
+          claimedByUserId: null,
+        },
+      });
+    }),
   getMetadata: protectedProcedure
     .input(
       z.object({

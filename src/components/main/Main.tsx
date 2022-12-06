@@ -6,6 +6,7 @@ import { RouterOutputs } from "../../utils/trpc";
 import MyGifts from "../my-gifts/MyGifts";
 import FriendsGifts from "../friend-gifts/FriendGifts";
 import Image from "next/image";
+import WishListBlackIcon from "../../../public/wish-list-black.png";
 
 type Views = "MY_GIFTS" | "MY_LIST" | "FRIEND_GIFTS";
 

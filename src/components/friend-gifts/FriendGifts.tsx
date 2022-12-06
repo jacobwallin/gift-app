@@ -14,16 +14,28 @@ export default function FriendGifts(props: Props) {
   const { userId, userShortName } = props;
   const [showForm, setShowForm] = useState(false);
   const giftsQuery = trpc.gifts.getAllByUser.useQuery({ userId: userId });
+  const claimGiftMutation = trpc.gifts.claim.useMutation();
+  const releaseGiftMutation = trpc.gifts.release.useMutation();
 
   const [selectedGift, setSelectedGift] = useState<
     RouterOutputs["gifts"]["create"] | undefined
   >(undefined);
+
+  useEffect(() => {
+    setSelectedGift(undefined);
+  }, [userId]);
 
   function viewGift(gift: RouterOutputs["gifts"]["create"]) {
     setSelectedGift(gift);
   }
   function closeGiftView() {
     setSelectedGift(undefined);
+  }
+  function claimGift(giftId: string) {
+    claimGiftMutation.mutate({ giftId: giftId });
+  }
+  function releaseGift(giftId: string) {
+    releaseGiftMutation.mutate({ giftId: giftId });
   }
 
   return (
@@ -32,7 +44,14 @@ export default function FriendGifts(props: Props) {
         {giftsQuery.isLoading ? (
           <div>loading...</div>
         ) : selectedGift !== undefined ? (
-          <Gift gift={selectedGift} closeView={closeGiftView} />
+          <Gift
+            gift={selectedGift}
+            closeView={closeGiftView}
+            claimGift={claimGift}
+            releaseGift={releaseGift}
+            loadingClaim={claimGiftMutation.isLoading}
+            loadingRelease={releaseGiftMutation.isLoading}
+          />
         ) : (
           <>
             <div className="mb-8 flex flex-row justify-between">
