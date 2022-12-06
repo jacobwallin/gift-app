@@ -41,6 +41,9 @@ export const giftRouter = router({
     return ctx.prisma.gift.findMany({
       where: { claimedByUserId: ctx.session.user.id },
       orderBy: { createdAt: "asc" },
+      include: {
+        user: true,
+      },
     });
   }),
   claim: protectedProcedure

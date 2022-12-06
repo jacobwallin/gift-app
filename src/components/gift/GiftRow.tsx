@@ -2,15 +2,20 @@ import { RouterOutputs } from "../../utils/trpc";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import GiftIcon from "../../../public/gift.png";
+import { string } from "zod";
 
 interface Props {
   gift: RouterOutputs["gifts"]["create"];
   view: (gift: RouterOutputs["gifts"]["create"]) => void;
   hideStatus: boolean;
+  user?: {
+    name: string;
+    image: string;
+  };
 }
 
 export default function GiftRow(props: Props) {
-  const { gift, view, hideStatus } = props;
+  const { gift, view, hideStatus, user } = props;
   const { data: sessionData } = useSession();
   return (
     <div
@@ -31,6 +36,22 @@ export default function GiftRow(props: Props) {
       <div className="grow-0">
         <div className=" max-h-6 overflow-hidden text-lg ">{gift.name}</div>
         <div className="text-md text-[#777]">{gift.notes}</div>
+        {user && (
+          <div className="absolute right-1 bottom-1 flex flex-col items-end rounded-md bg-[#9fbfdf] py-[3px] px-2 text-white">
+            <div className="flex gap-2">
+              <div>
+                <Image
+                  src={user.image}
+                  width={25}
+                  height={25}
+                  alt=""
+                  className="rounded-full"
+                />
+              </div>
+              <div>{user.name}</div>
+            </div>
+          </div>
+        )}
         {!hideStatus && (
           <>
             {gift.claimedByUserId &&

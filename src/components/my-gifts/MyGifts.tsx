@@ -6,21 +6,12 @@ import { trpc } from "../../utils/trpc";
 import { RouterOutputs } from "../../utils/trpc";
 import Image from "next/image";
 
-interface Props {
-  userId: string;
-  userShortName: string;
-}
-
-export default function FriendGifts(props: Props) {
-  const { userId, userShortName } = props;
+export default function MyGifts() {
   const { data: sessionData } = useSession();
-  const giftsQuery = trpc.gifts.getAllByUser.useQuery({ userId: userId });
-  const claimGiftMutation = trpc.gifts.claim.useMutation();
+  const giftsQuery = trpc.gifts.getMyGifts.useQuery();
   const releaseGiftMutation = trpc.gifts.release.useMutation();
 
-  const [gifts, setGifts] = useState<RouterOutputs["gifts"]["getAllByUser"]>(
-    []
-  );
+  const [gifts, setGifts] = useState<RouterOutputs["gifts"]["getMyGifts"]>([]);
   const [selectedGift, setSelectedGift] = useState<
     RouterOutputs["gifts"]["create"] | undefined
   >(undefined);
@@ -31,47 +22,17 @@ export default function FriendGifts(props: Props) {
     setGifts(giftsQuery.data || []);
   }, [giftsQuery.data]);
 
-  useEffect(() => {
-    setSelectedGift(undefined);
-  }, [userId]);
-
   function viewGift(gift: RouterOutputs["gifts"]["create"]) {
     setSelectedGift(gift);
   }
   function closeGiftView() {
     setSelectedGift(undefined);
   }
-  function claimGift(giftId: string) {
-    setClaimedGiftId(giftId);
-    claimGiftMutation.mutate({ giftId: giftId });
-  }
+
   function releaseGift(giftId: string) {
     setReleasedGiftId(giftId);
     releaseGiftMutation.mutate({ giftId: giftId });
   }
-  useEffect(() => {
-    if (claimGiftMutation.status === "success") {
-      if (claimGiftMutation.data.count > 0) {
-        setGifts(
-          gifts.map((gift) => {
-            if (gift.id === claimedGiftId) {
-              return {
-                ...gift,
-                claimedByUserId: sessionData?.user?.id || null,
-              };
-            }
-            return gift;
-          })
-        );
-        if (selectedGift) {
-          setSelectedGift({
-            ...selectedGift,
-            claimedByUserId: sessionData?.user?.id || null,
-          });
-        }
-      }
-    }
-  }, [claimGiftMutation.status, claimedGiftId]);
 
   useEffect(() => {
     if (releaseGiftMutation.status === "success") {
@@ -106,30 +67,35 @@ export default function FriendGifts(props: Props) {
           <Gift
             gift={selectedGift}
             closeView={closeGiftView}
-            claimGift={claimGift}
             releaseGift={releaseGift}
-            loadingClaim={claimGiftMutation.isLoading}
             loadingRelease={releaseGiftMutation.isLoading}
           />
         ) : (
           <>
             <div className="mb-8 flex flex-row justify-between">
-              <h1 className="text-xl font-medium">{`${userShortName}'s Wish List`}</h1>
+              <h1 className="text-xl font-medium">My Gifts</h1>
             </div>
             <div className="flex flex-col items-center divide-y">
               {gifts.map((gift) => {
+                const userShortName = gift.user.name
+                  ? gift.user.name.split(" ")[0]
+                  : "Friend";
                 return (
                   <GiftRow
                     key={gift.id}
                     gift={gift}
                     view={viewGift}
-                    hideStatus={false}
+                    hideStatus={true}
+                    user={{
+                      name: userShortName || "",
+                      image: gift.user.image || "",
+                    }}
                   />
                 );
               })}
               {gifts.length === 0 && (
                 <div className="text-[#999]">
-                  {"You haven't added any gifts yet"}
+                  {"You haven't claimed any gifts yet"}
                 </div>
               )}
             </div>

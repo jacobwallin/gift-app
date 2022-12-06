@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { RouterOutputs } from "../../utils/trpc";
 import MyList from "../my-list/MyList";
 import FriendsGifts from "../friend-gifts/FriendGifts";
+import MyGifts from "../my-gifts/MyGifts";
 import Image from "next/image";
 import WishListBlackIcon from "../../../public/wish-list-black.png";
 
@@ -76,6 +77,7 @@ export default function Main() {
             userShortName={selectedUserName}
           />
         )}
+        {selectedView === "MY_GIFTS" && <MyGifts />}
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const initialValues = {
   imageUrl: "",
 };
 
-export default function MyGifts() {
+export default function MyList() {
   const [showForm, setShowForm] = useState(false);
   const giftsQuery = trpc.gifts.getAll.useQuery();
   const mutation = trpc.gifts.create.useMutation();
