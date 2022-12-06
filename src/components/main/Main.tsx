@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { trpc } from "../../utils/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { RouterOutputs } from "../../utils/trpc";
-import MyGifts from "../my-gifts/MyGifts";
+import MyList from "../my-list/MyList";
 import FriendsGifts from "../friend-gifts/FriendGifts";
 import Image from "next/image";
 import WishListBlackIcon from "../../../public/wish-list-black.png";
@@ -69,7 +69,7 @@ export default function Main() {
         </div>
       </div>
       <div className=" h-min w-[700px] rounded-lg bg-white p-4 shadow-md ">
-        {selectedView === "MY_LIST" && <MyGifts />}
+        {selectedView === "MY_LIST" && <MyList />}
         {selectedView === "FRIEND_GIFTS" && selectedUserId !== "" && (
           <FriendsGifts
             userId={selectedUserId}

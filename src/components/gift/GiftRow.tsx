@@ -14,12 +14,7 @@ export default function GiftRow(props: Props) {
   const { data: sessionData } = useSession();
   return (
     <div
-      className={`relative flex w-full cursor-pointer gap-4  hover:bg-[#eee] ${
-        !hideStatus &&
-        gift.claimedByUserId &&
-        gift.claimedByUserId !== sessionData?.user?.id &&
-        "opacity-60"
-      }`}
+      className={`relative flex w-full cursor-pointer gap-4  hover:bg-[#eee]`}
       onClick={() => view(gift)}
     >
       <div className="relative my-1 flex h-[75px] min-h-[75px] w-[75px] min-w-[75px] items-center justify-center overflow-hidden rounded-sm">

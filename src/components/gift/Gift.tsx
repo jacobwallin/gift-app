@@ -55,8 +55,18 @@ export default function Gift(props: Props) {
           )}
         </div>
         <div className="relative grow">
-          <div className="mb-2 text-lg">{gift.name}</div>
-          <div className="text-md text-[#aaa]">{gift.notes}</div>
+          <div className="mb-0 text-lg">{gift.name}</div>
+          {gift.userId !== sessionData?.user?.id && (
+            <>
+              {gift.claimedByUserId &&
+                gift.claimedByUserId !== sessionData?.user?.id && (
+                  <div className=" w-max self-end rounded-sm bg-gray-400 px-3 text-sm text-white">
+                    Claimed
+                  </div>
+                )}
+            </>
+          )}
+          <div className="text-md mt-2 text-[#aaa]">{gift.notes}</div>
           <div className="justify-self-end">
             {deleteGift && (
               <button
