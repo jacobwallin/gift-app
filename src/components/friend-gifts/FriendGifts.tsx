@@ -17,9 +17,18 @@ export default function FriendGifts(props: Props) {
   const claimGiftMutation = trpc.gifts.claim.useMutation();
   const releaseGiftMutation = trpc.gifts.release.useMutation();
 
+  const [gifts, setGifts] = useState<RouterOutputs["gifts"]["getAllByUser"]>(
+    []
+  );
   const [selectedGift, setSelectedGift] = useState<
     RouterOutputs["gifts"]["create"] | undefined
   >(undefined);
+  const [claimedGiftId, setClaimedGiftId] = useState("");
+  const [releasedGiftId, setReleasedGiftId] = useState("");
+
+  useEffect(() => {
+    setGifts(giftsQuery.data || []);
+  }, [giftsQuery.data]);
 
   useEffect(() => {
     setSelectedGift(undefined);
@@ -32,11 +41,56 @@ export default function FriendGifts(props: Props) {
     setSelectedGift(undefined);
   }
   function claimGift(giftId: string) {
+    setClaimedGiftId(giftId);
     claimGiftMutation.mutate({ giftId: giftId });
   }
   function releaseGift(giftId: string) {
+    setReleasedGiftId(giftId);
     releaseGiftMutation.mutate({ giftId: giftId });
   }
+  useEffect(() => {
+    if (claimGiftMutation.status === "success") {
+      setGifts(
+        gifts.map((gift) => {
+          if (gift.id === claimedGiftId) {
+            return {
+              ...gift,
+              claimedByUserId: claimGiftMutation.data.claimedByUserId,
+            };
+          }
+          return gift;
+        })
+      );
+      if (selectedGift) {
+        setSelectedGift({
+          ...selectedGift,
+          claimedByUserId: claimGiftMutation.data.claimedByUserId,
+        });
+      }
+    }
+  }, [claimGiftMutation.status, claimedGiftId]);
+
+  useEffect(() => {
+    if (releaseGiftMutation.status === "success") {
+      setGifts(
+        gifts.map((gift) => {
+          if (gift.id === releasedGiftId) {
+            return {
+              ...gift,
+              claimedByUserId: null,
+            };
+          }
+          return gift;
+        })
+      );
+      if (selectedGift) {
+        setSelectedGift({
+          ...selectedGift,
+          claimedByUserId: null,
+        });
+      }
+    }
+  }, [releaseGiftMutation.status, releasedGiftId]);
 
   return (
     <>
@@ -58,10 +112,10 @@ export default function FriendGifts(props: Props) {
               <h1 className="text-xl font-medium">{`${userShortName}'s Wish List`}</h1>
             </div>
             <div className="flex flex-col items-center divide-y">
-              {giftsQuery.data?.map((gift) => {
+              {gifts.map((gift) => {
                 return <GiftRow key={gift.id} gift={gift} view={viewGift} />;
               })}
-              {giftsQuery.data?.length === 0 && (
+              {gifts.length === 0 && (
                 <div className="text-[#999]">
                   {"You haven't added any gifts yet"}
                 </div>

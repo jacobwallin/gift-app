@@ -21,7 +21,15 @@ interface Props {
 
 export default function Gift(props: Props) {
   const { data: sessionData } = useSession();
-  const { gift, closeView, deleteGift, claimGift, releaseGift } = props;
+  const {
+    gift,
+    closeView,
+    deleteGift,
+    claimGift,
+    releaseGift,
+    loadingClaim,
+    loadingRelease,
+  } = props;
   return (
     <div>
       <div className="mb-8 flex flex-row justify-between">
@@ -62,6 +70,7 @@ export default function Gift(props: Props) {
             {claimGift && gift.claimedByUserId !== sessionData?.user?.id && (
               <button
                 onClick={() => claimGift(gift.id)}
+                disabled={loadingClaim}
                 className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md  bg-[#81C784] py-1  px-3 text-white hover:bg-[#66BB6A]"
               >
                 <Image src={CheckIcon} width={20} height={20} alt="delete" />
@@ -71,6 +80,7 @@ export default function Gift(props: Props) {
             {releaseGift && gift.claimedByUserId === sessionData?.user?.id && (
               <button
                 onClick={() => releaseGift(gift.id)}
+                disabled={loadingRelease}
                 className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md  bg-red-400 py-1  px-3 text-white hover:bg-red-500"
               >
                 <Image src={ReleaseIcon} width={20} height={20} alt="delete" />
