@@ -61,7 +61,7 @@ export const UrlInput: React.FC<
           {label}
         </label>
         <button
-          className="itens-center mb-1 flex cursor-pointer justify-center gap-1 rounded-md bg-[#bbb] py-1 px-3 text-sm text-white enabled:hover:bg-[#999] disabled:cursor-default"
+          className="itens-center mb-1 flex cursor-pointer justify-center gap-1 rounded-md bg-red-400 py-1 px-3 text-sm text-white enabled:hover:bg-red-500 disabled:cursor-default"
           onClick={() => props.fetchMetadata(field.value)}
           type="button"
           disabled={meta.error !== undefined || meta.value === ""}

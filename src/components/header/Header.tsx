@@ -11,7 +11,7 @@ export default function Header() {
           {sessionData.user?.image && (
             <div className="mr-4 flex items-center justify-center gap-1">
               <button
-                className="text-white hover:underline"
+                className="text-sm text-[#47596b] hover:underline"
                 onClick={() => signOut()}
               >
                 Sign Out
