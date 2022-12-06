@@ -9,7 +9,7 @@ import { giftRouter } from "../../server/trpc/router/gifts";
 interface Props {
   gift: RouterOutputs["gifts"]["create"];
   closeView: () => void;
-  deleteGift: (giftId: string) => void;
+  deleteGift?: (giftId: string) => void;
 }
 
 export default function Gift(props: Props) {
@@ -42,13 +42,15 @@ export default function Gift(props: Props) {
           <div className="mb-2 text-lg">{gift.name}</div>
           <div className="text-md text-[#aaa]">{gift.notes}</div>
           <div className="justify-self-end">
-            <button
-              onClick={() => deleteGift(gift.id)}
-              className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md bg-red-500 py-1 px-3 text-white hover:bg-red-600"
-            >
-              <Image src={PlusIcon} width={20} height={20} alt="delete" />
-              <div>Delete Gift</div>
-            </button>
+            {deleteGift && (
+              <button
+                onClick={() => deleteGift(gift.id)}
+                className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md bg-red-500 py-1 px-3 text-white hover:bg-red-600"
+              >
+                <Image src={PlusIcon} width={20} height={20} alt="delete" />
+                <div>Delete Gift</div>
+              </button>
+            )}
           </div>
         </div>
       </div>

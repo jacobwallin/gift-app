@@ -99,10 +99,15 @@ export default function MyGifts() {
                   <Image src={PlusIcon} width={17} height={17} alt="add gift" />
                 </button>
               </div>
-              <div className="divide-y">
+              <div className="flex flex-col items-center divide-y">
                 {gifts.map((gift) => {
                   return <GiftRow key={gift.id} gift={gift} view={viewGift} />;
                 })}
+                {gifts.length === 0 && (
+                  <div className="text-[#999]">
+                    {"You haven't added any gifts yet"}
+                  </div>
+                )}
               </div>
             </>
           )}

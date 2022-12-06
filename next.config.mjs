@@ -17,6 +17,7 @@ const config = {
     domains: [
       "ufdyazjibfvggfbkzhid.supabase.co",
       "ufdyazjibfvggfbkzhid.supabase.in",
+      "lh3.googleusercontent.com",
     ],
   },
 };

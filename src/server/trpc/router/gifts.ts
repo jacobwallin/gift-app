@@ -1,8 +1,8 @@
+import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 import { nanoid } from "nanoid";
 import { decode } from "base64-arraybuffer";
-import { router, protectedProcedure } from "../trpc";
 import { env } from "../../../env/server.mjs";
 import metascraper from "metadata-scraper";
 import puppeteer from "puppeteer";
@@ -24,6 +24,19 @@ export const giftRouter = router({
       orderBy: { createdAt: "asc" },
     });
   }),
+  getAllByUser: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(({ input, ctx }) => {
+      return ctx.prisma.gift.findMany({
+        where: { userId: input.userId, deletedAt: null },
+        orderBy: { createdAt: "asc" },
+      });
+    }),
+
   getMetadata: protectedProcedure
     .input(
       z.object({
