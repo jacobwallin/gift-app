@@ -35,18 +35,18 @@ export default function GiftRow(props: Props) {
           <>
             {gift.claimedByUserId &&
               gift.claimedByUserId !== sessionData?.user?.id && (
-                <div className="absolute right-1 bottom-1 w-max self-end rounded-sm bg-gray-400 px-3 text-white">
+                <div className="absolute right-1 bottom-1 w-max self-end rounded-sm bg-gray-400 px-3 py-[2px] text-sm text-white">
                   Claimed
                 </div>
               )}
             {gift.claimedByUserId &&
               gift.claimedByUserId === sessionData?.user?.id && (
-                <div className="absolute right-1 bottom-1 w-max self-end rounded-sm  bg-[#9fbfdf] px-3 text-white">
+                <div className="absolute right-1 bottom-1 w-max self-end rounded-sm bg-[#9fbfdf] px-3 py-[2px] text-sm text-white">
                   Claimed By You
                 </div>
               )}
             {!gift.claimedByUserId && (
-              <div className="absolute right-1 bottom-1 w-max self-end rounded-sm  bg-[#81C784] px-3 text-white">
+              <div className="absolute right-1 bottom-1 w-max self-end rounded-sm bg-[#81C784] px-3 py-[2px] text-sm text-white">
                 Unclaimed
               </div>
             )}
