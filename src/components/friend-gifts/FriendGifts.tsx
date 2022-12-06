@@ -129,7 +129,7 @@ export default function FriendGifts(props: Props) {
               })}
               {gifts.length === 0 && (
                 <div className="text-[#999]">
-                  {"You haven't added any gifts yet"}
+                  {`${userShortName} hasn't added any gifts yet`}
                 </div>
               )}
             </div>
