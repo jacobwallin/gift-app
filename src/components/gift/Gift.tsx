@@ -10,6 +10,7 @@ interface Props {
   gift: RouterOutputs["gifts"]["create"];
   closeView: () => void;
   deleteGift?: (giftId: string) => void;
+  claimGift?: (giftId: string) => void;
 }
 
 export default function Gift(props: Props) {

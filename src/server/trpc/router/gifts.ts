@@ -37,6 +37,26 @@ export const giftRouter = router({
       });
     }),
 
+  getMyGifts: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.gift.findMany({
+      where: { claimedByUserId: ctx.session.user.id },
+      orderBy: { createdAt: "asc" },
+    });
+  }),
+  claim: protectedProcedure
+    .input(
+      z.object({
+        giftId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.gift.update({
+        where: { id: input.giftId },
+        data: {
+          claimedByUserId: ctx.session.user.id,
+        },
+      });
+    }),
   getMetadata: protectedProcedure
     .input(
       z.object({
