@@ -17,6 +17,7 @@ const Home: NextPage = () => {
           name="description"
           content="Coordinate gift giving with friends and family."
         />
+        <meta name="theme-color" content="#9fbfdf" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.giftme.cool/" />
         <meta property="og:title" content="GiftMe" />
