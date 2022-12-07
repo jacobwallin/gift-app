@@ -90,7 +90,7 @@ export default function MyList() {
             />
           ) : (
             <>
-              <div className="mb-8 flex flex-row justify-between">
+              <div className="mb-8 flex flex-row items-center justify-between">
                 <h1 className="text-xl font-medium">My Wish List</h1>
                 <button
                   onClick={toggleForm}

@@ -69,7 +69,7 @@ export default function Main() {
           )}
         </div>
       </div>
-      <div className=" h-min w-full max-w-[700px] rounded-lg bg-white p-4 shadow-md ">
+      <div className=" h-min w-full max-w-[700px] rounded-lg bg-white p-2 shadow-md sm:p-4 ">
         {selectedView === "MY_LIST" && <MyList />}
         {selectedView === "FRIEND_GIFTS" && selectedUserId !== "" && (
           <FriendsGifts
