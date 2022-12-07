@@ -70,7 +70,7 @@ export default function Main() {
       <div className="relative md:hidden">
         <div className=" w-max min-w-[175px] flex-col rounded-lg bg-[#aaa] p-1 text-white shadow-md hover:bg-[#999]">
           <div
-            className={`flex h-[37px] cursor-pointer items-center justify-between gap-3 rounded-md px-2 py-1 text-lg`}
+            className={`flex h-[37px] cursor-pointer items-center justify-between gap-3 rounded-md px-2 py-1 text-base`}
             onClick={() => toggleMobileMenu()}
           >
             <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function Main() {
                   />
                 )}
               </div>
-              <div>{selectedMenuItem.title}</div>
+              <div className="font-medium">{selectedMenuItem.title}</div>
             </div>
             <div>
               <Image src={DropdownWhiteIcon} width={15} height={15} alt="" />
