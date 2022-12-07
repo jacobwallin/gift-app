@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 import { useQuery } from "@tanstack/react-query";
 import { RouterOutputs } from "../../utils/trpc";
@@ -9,12 +8,10 @@ import MyGifts from "../my-gifts/MyGifts";
 import Image from "next/image";
 import WishListBlackIcon from "../../../public/wish-list-black.png";
 import DropdownWhiteIcon from "../../../public/down-white.png";
-import { string } from "zod";
 
 type Views = "MY_GIFTS" | "MY_LIST" | "FRIEND_GIFTS";
 
 export default function Main() {
-  const { data: sessionData } = useSession();
   const userQuery = trpc.users.getAll.useQuery();
 
   const [selectedUserId, setSelectedUserId] = useState("");

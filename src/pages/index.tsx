@@ -8,7 +8,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const { data: sessionData } = useSession();
+  const { data: sessionData, status } = useSession();
   return (
     <>
       <Head>
@@ -31,7 +31,13 @@ const Home: NextPage = () => {
       </Head>
       <main className="min-h-screen bg-[#9fbfdf] pb-6">
         <Header />
-        <div className="flex flex-col">{sessionData ? <Main /> : <Auth />}</div>
+        {status === "loading" ? (
+          "loading..."
+        ) : (
+          <div className="flex flex-col">
+            {sessionData ? <Main /> : <Auth />}
+          </div>
+        )}
       </main>
     </>
   );
