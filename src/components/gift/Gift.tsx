@@ -43,7 +43,7 @@ export default function Gift(props: Props) {
       </div>
 
       <div className="flex flex-row gap-2 sm:gap-4">
-        <div className="relative flex h-[125px] min-h-[125px] w-[125px] min-w-[125px]  items-center  justify-center overflow-hidden rounded-md border border-[#ddd] sm:h-[200px] sm:max-h-[200px] sm:w-[200px] sm:max-w-[200px]">
+        <div className="relative flex h-[125px] min-h-[125px] w-[125px] min-w-[125px]  items-center  justify-center overflow-hidden rounded-md border border-[#ddd] sm:h-[200px] sm:min-h-[200px] sm:w-[200px] sm:min-w-[200px]">
           {gift.image ? (
             <img
               src={gift.image}
