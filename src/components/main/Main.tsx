@@ -92,7 +92,7 @@ export default function Main() {
                 showMobileMenu ? "rotate-180 transition-all" : ""
               }`}
             >
-              <Image src={DropdownWhiteIcon} width={15} height={15} alt="" />
+              <Image src={DropdownWhiteIcon} width={17} height={17} alt="" />
             </div>
           </div>
         </div>
