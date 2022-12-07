@@ -36,8 +36,8 @@ export default function Main() {
   }
 
   return (
-    <div className="mt-20 flex justify-center gap-5">
-      <div className=" flex h-min w-[250px] flex-col gap-2  rounded-lg bg-white p-3 shadow-md">
+    <div className="mt-20 flex flex-col justify-center gap-5 px-1 md:flex-row">
+      <div className=" flex h-min w-[250px] min-w-[250px] flex-col gap-2  rounded-lg bg-white p-3 shadow-md">
         <div
           className={`cursor-pointer rounded-md px-3 py-1 text-xl ${
             selectedView === "MY_LIST"
@@ -69,7 +69,7 @@ export default function Main() {
           )}
         </div>
       </div>
-      <div className=" h-min w-[700px] rounded-lg bg-white p-4 shadow-md ">
+      <div className=" h-min w-full max-w-[700px] rounded-lg bg-white p-4 shadow-md ">
         {selectedView === "MY_LIST" && <MyList />}
         {selectedView === "FRIEND_GIFTS" && selectedUserId !== "" && (
           <FriendsGifts

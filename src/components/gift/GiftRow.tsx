@@ -34,10 +34,12 @@ export default function GiftRow(props: Props) {
         )}
       </div>
       <div className="grow-0">
-        <div className=" max-h-6 overflow-hidden text-lg ">{gift.name}</div>
-        <div className="text-md text-[#777]">{gift.notes}</div>
+        <div className=" text-md max-h-6 overflow-hidden sm:text-lg ">
+          {gift.name}
+        </div>
+        <div className="text-sm text-[#777] sm:text-base">{gift.notes}</div>
         {user && (
-          <div className="absolute right-1 bottom-1 flex flex-col items-end rounded-md bg-[#9fbfdf] py-[3px] px-2 text-white">
+          <div className="absolute right-1 bottom-1 flex flex-col items-end rounded-md bg-[#bbb] py-[3px] px-2 text-white">
             <div className="flex gap-2">
               <div>
                 <Image

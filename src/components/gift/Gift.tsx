@@ -43,7 +43,7 @@ export default function Gift(props: Props) {
       </div>
 
       <div className="flex flex-row gap-4">
-        <div className="relative flex h-[200px] min-h-[200px] w-[200px] min-w-[200px] items-center justify-center overflow-hidden rounded-md border border-[#ddd]">
+        <div className="relative flex h-[125px] min-h-[125px] w-[125px] min-w-[125px]  items-center  justify-center overflow-hidden rounded-md border border-[#ddd] sm:h-[200px] sm:max-h-[200px] sm:w-[200px] sm:max-w-[200px]">
           {gift.image ? (
             <img
               src={gift.image}
@@ -54,10 +54,10 @@ export default function Gift(props: Props) {
             <Image src={GiftIcon} width={50} height={50} alt="gift-image" />
           )}
         </div>
-        <div className="relative grow">
+        <div className="text-md relative grow sm:text-lg">
           {gift.link && gift.link !== "" ? (
             <a
-              className="mb-0 text-lg text-[#537393] hover:underline"
+              className="mb-0  max-h-20 text-[#537393] hover:underline"
               href={gift.link || ""}
               target="_blank"
               rel="noreferrer"
@@ -65,7 +65,7 @@ export default function Gift(props: Props) {
               {gift.name}
             </a>
           ) : (
-            <div className="mb-0 text-lg">{gift.name}</div>
+            <div className="mb-0 ">{gift.name}</div>
           )}
 
           {gift.userId !== sessionData?.user?.id && (
@@ -78,8 +78,10 @@ export default function Gift(props: Props) {
                 )}
             </>
           )}
-          <div className="text-md mt-2 text-[#aaa]">{gift.notes}</div>
-          <div className="justify-self-end">
+          <div className="mt-0 text-sm text-[#aaa] sm:mt-1 sm:text-base">
+            {gift.notes}
+          </div>
+          <div className="justify-self-end text-sm sm:text-base">
             {deleteGift && (
               <button
                 onClick={() => deleteGift(gift.id)}
