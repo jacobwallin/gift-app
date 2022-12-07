@@ -68,7 +68,7 @@ export default function Main() {
   return (
     <div className="mt-6 flex flex-col justify-center gap-2 px-1 md:mt-20 md:flex-row md:gap-5">
       <div className="relative md:hidden">
-        <div className=" w-max min-w-[175px] flex-col rounded-lg bg-[#aaa] p-1 text-white shadow-md hover:bg-[#999]">
+        <div className=" w-max min-w-[175px] flex-col rounded-lg bg-[#537393] p-1 text-white shadow-md hover:bg-[#395979]">
           <div
             className={`flex h-[37px] cursor-pointer items-center justify-between gap-3 rounded-md px-2 py-1 text-base`}
             onClick={() => toggleMobileMenu()}
@@ -87,7 +87,11 @@ export default function Main() {
               </div>
               <div className="font-medium">{selectedMenuItem.title}</div>
             </div>
-            <div>
+            <div
+              className={`transition-all ${
+                showMobileMenu ? "rotate-180 transition-all" : ""
+              }`}
+            >
               <Image src={DropdownWhiteIcon} width={15} height={15} alt="" />
             </div>
           </div>
