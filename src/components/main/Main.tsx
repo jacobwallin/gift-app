@@ -70,7 +70,7 @@ export default function Main() {
       <div className="relative md:hidden">
         <div className=" w-max min-w-[175px] flex-col rounded-lg bg-[#aaa] p-1 text-white shadow-md hover:bg-[#999]">
           <div
-            className={`flex cursor-pointer items-center justify-between gap-3 rounded-md px-2 py-1 text-lg `}
+            className={`flex h-[37px] cursor-pointer items-center justify-between gap-3 rounded-md px-2 py-1 text-lg`}
             onClick={() => toggleMobileMenu()}
           >
             <div className="flex items-center gap-2">
@@ -93,7 +93,7 @@ export default function Main() {
           </div>
         </div>
         <div
-          className={`absolute top-[52px] z-10 h-min w-[250px] min-w-[250px] flex-col gap-2 rounded-lg border border-gray-300  bg-white p-2 text-lg shadow-md  ${
+          className={`absolute top-[49px] z-10 h-min w-[250px] min-w-[250px] flex-col gap-2 rounded-lg border border-gray-300  bg-white p-2 text-lg shadow-md  ${
             showMobileMenu ? "flex" : "hidden"
           }`}
         >
