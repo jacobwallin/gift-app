@@ -19,7 +19,7 @@ export default function GiftRow(props: Props) {
   const { data: sessionData } = useSession();
   return (
     <div
-      className={`relative flex w-full cursor-pointer gap-4  hover:bg-[#eee]`}
+      className={`relative flex w-full cursor-pointer gap-2 hover:bg-[#eee]  sm:gap-4`}
       onClick={() => view(gift)}
     >
       <div className="relative my-1 flex h-[75px] min-h-[75px] w-[75px] min-w-[75px] items-center justify-center overflow-hidden rounded-sm">
