@@ -41,11 +41,12 @@ export const TextInput: React.FC<
 
 interface UrlInputCustomProps extends LabelCustomProps {
   fetchMetadata: (url: string) => void;
+  autofillError?: boolean;
 }
 
 export const UrlInput: React.FC<
   FieldHookConfig<string> & UrlInputCustomProps
-> = ({ label, note, disabled, ...props }) => {
+> = ({ label, note, disabled, fetchMetadata, autofillError, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
   // message if the field is invalid and it has been touched (i.e. visited)
@@ -62,7 +63,7 @@ export const UrlInput: React.FC<
         </label>
         <button
           className="itens-center mb-1 flex cursor-pointer justify-center gap-1 rounded-md bg-red-400 py-1 px-3 text-sm text-white enabled:hover:bg-red-500 disabled:cursor-default disabled:opacity-60"
-          onClick={() => props.fetchMetadata(field.value)}
+          onClick={() => fetchMetadata(field.value)}
           type="button"
           disabled={meta.error !== undefined || meta.value === ""}
         >
@@ -79,6 +80,11 @@ export const UrlInput: React.FC<
         disabled={disabled}
       />
       {note && <div className="mt-1 text-xs text-[#999]">{note}</div>}
+      {autofillError && (
+        <div className="text-sm text-[#E57373]">
+          Attempt to autofill failed 😢
+        </div>
+      )}
       {meta.touched && meta.error ? (
         <div className="ml-1 text-sm text-[#E57373]">{`*${meta.error}`}</div>
       ) : null}
