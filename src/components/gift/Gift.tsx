@@ -17,6 +17,10 @@ interface Props {
   releaseGift?: (giftId: string) => void;
   loadingRelease?: boolean;
   loadingClaim?: boolean;
+  purchasedFor?: {
+    name: string;
+    image: string;
+  };
 }
 
 export default function Gift(props: Props) {
@@ -29,11 +33,14 @@ export default function Gift(props: Props) {
     releaseGift,
     loadingClaim,
     loadingRelease,
+    purchasedFor,
   } = props;
   return (
     <div>
       <div className="mb-8 flex flex-row items-center justify-between">
-        <h1 className="text-xl font-medium">View Gift</h1>
+        <h1 className="text-xl font-medium">
+          {purchasedFor ? `Your Gift for ${purchasedFor.name}` : "View Gift"}
+        </h1>
         <button
           onClick={closeView}
           className=" flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#bbb] hover:bg-[#999]"

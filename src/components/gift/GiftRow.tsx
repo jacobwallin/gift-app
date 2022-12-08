@@ -3,19 +3,20 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import GiftIcon from "../../../public/gift.png";
 import { string } from "zod";
+import { GiftWithUser } from "../my-gifts/MyGifts";
 
 interface Props {
   gift: RouterOutputs["gifts"]["create"];
-  view: (gift: RouterOutputs["gifts"]["create"]) => void;
+  view: (gift: any) => void;
   hideStatus: boolean;
-  user?: {
+  purchasedFor?: {
     name: string;
     image: string;
   };
 }
 
 export default function GiftRow(props: Props) {
-  const { gift, view, hideStatus, user } = props;
+  const { gift, view, hideStatus, purchasedFor } = props;
   const { data: sessionData } = useSession();
   return (
     <div
@@ -38,19 +39,19 @@ export default function GiftRow(props: Props) {
           {gift.name}
         </div>
         <div className="text-sm text-[#777] sm:text-base">{gift.notes}</div>
-        {user && (
-          <div className="absolute right-1 bottom-1 flex flex-col items-end rounded-md bg-[#bbb] py-[3px] px-2 text-white">
+        {purchasedFor && (
+          <div className="absolute right-1 bottom-1 flex flex-col items-end rounded-md bg-[#9fbfdf] py-[3px] px-2 text-white">
             <div className="flex gap-2">
               <div>
                 <Image
-                  src={user.image}
+                  src={purchasedFor.image}
                   width={25}
                   height={25}
                   alt=""
                   className="rounded-full"
                 />
               </div>
-              <div>{user.name}</div>
+              <div>{`For ${purchasedFor.name}`}</div>
             </div>
           </div>
         )}

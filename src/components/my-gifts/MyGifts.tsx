@@ -6,15 +6,17 @@ import { trpc } from "../../utils/trpc";
 import { RouterOutputs } from "../../utils/trpc";
 import Image from "next/image";
 
+export type GiftWithUser = RouterOutputs["gifts"]["getMyGifts"][number];
+
 export default function MyGifts() {
   const { data: sessionData } = useSession();
   const giftsQuery = trpc.gifts.getMyGifts.useQuery();
   const releaseGiftMutation = trpc.gifts.release.useMutation();
 
   const [gifts, setGifts] = useState<RouterOutputs["gifts"]["getMyGifts"]>([]);
-  const [selectedGift, setSelectedGift] = useState<
-    RouterOutputs["gifts"]["create"] | undefined
-  >(undefined);
+  const [selectedGift, setSelectedGift] = useState<GiftWithUser | undefined>(
+    undefined
+  );
   const [claimedGiftId, setClaimedGiftId] = useState("");
   const [releasedGiftId, setReleasedGiftId] = useState("");
 
@@ -22,7 +24,7 @@ export default function MyGifts() {
     setGifts(giftsQuery.data || []);
   }, [giftsQuery.data]);
 
-  function viewGift(gift: RouterOutputs["gifts"]["create"]) {
+  function viewGift(gift: GiftWithUser) {
     setSelectedGift(gift);
   }
   function closeGiftView() {
@@ -69,6 +71,13 @@ export default function MyGifts() {
             closeView={closeGiftView}
             releaseGift={releaseGift}
             loadingRelease={releaseGiftMutation.isLoading}
+            purchasedFor={{
+              name:
+                (selectedGift.user.name
+                  ? selectedGift.user.name.split(" ")[0]
+                  : "") || "",
+              image: selectedGift.user.image || "",
+            }}
           />
         ) : (
           <>
@@ -79,14 +88,14 @@ export default function MyGifts() {
               {gifts.map((gift) => {
                 const userShortName = gift.user.name
                   ? gift.user.name.split(" ")[0]
-                  : "Friend";
+                  : "";
                 return (
                   <GiftRow
                     key={gift.id}
                     gift={gift}
                     view={viewGift}
                     hideStatus={true}
-                    user={{
+                    purchasedFor={{
                       name: userShortName || "",
                       image: gift.user.image || "",
                     }}

@@ -210,7 +210,7 @@ export default function GiftForm(props: Props) {
           )}
           <button
             type="submit"
-            // disabled={loading}
+            disabled={getMetadata.isLoading || loading}
             className="active:before: mt-3 h-[32px] w-[100px] rounded-md bg-[#81C784] text-white hover:bg-[#66BB6A]"
           >
             Add Item
