@@ -39,7 +39,7 @@ export default function Gift(props: Props) {
     <div>
       <div className="mb-8 flex flex-row items-center justify-between">
         <h1 className="text-xl font-medium">
-          {purchasedFor ? `Your Gift for ${purchasedFor.name}` : "View Gift"}
+          {purchasedFor ? `Your Gift for ${purchasedFor.name}` : "View Item"}
         </h1>
         <button
           onClick={closeView}

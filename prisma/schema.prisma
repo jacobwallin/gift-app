@@ -26,9 +26,9 @@ model Gift {
   updatedAt       DateTime @updatedAt
   deletedAt       DateTime?
   claimedByUserId String?
-  claimedBy       User?     @relation("Claimed Gifts", fields: [claimedByUserId], references: [id], onDelete: Cascade)
+  claimedBy       User?     @relation("Claimed Gifts", fields: [claimedByUserId], references: [id], onDelete: SetNull)
   suggestedByUserId String?
-  suggestedBy       User?     @relation("Suggested Gifts", fields: [suggestedByUserId], references: [id], onDelete: Cascade)
+  suggestedBy       User?     @relation("Suggested Gifts", fields: [suggestedByUserId], references: [id], onDelete: SetNull)
 }
 
 // Necessary for Next auth

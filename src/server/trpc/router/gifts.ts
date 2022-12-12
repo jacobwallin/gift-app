@@ -20,7 +20,11 @@ export const config = {
 export const giftRouter = router({
   getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.gift.findMany({
-      where: { userId: ctx.session.user.id, deletedAt: null },
+      where: {
+        userId: ctx.session.user.id,
+        deletedAt: null,
+        suggestedByUserId: null,
+      },
       orderBy: { createdAt: "asc" },
     });
   }),
@@ -34,6 +38,9 @@ export const giftRouter = router({
       return ctx.prisma.gift.findMany({
         where: { userId: input.userId, deletedAt: null },
         orderBy: { createdAt: "asc" },
+        include: {
+          suggestedBy: true,
+        },
       });
     }),
 
@@ -134,6 +141,54 @@ export const giftRouter = router({
           notes,
           image: imageUrl,
           userId: ctx.session.user.id,
+        },
+      });
+    }),
+  suggest: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        userId: z.string(),
+        image: z.string().optional(),
+        imageUrl: z.string().optional(),
+        link: z.string().optional(),
+        notes: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      let imageUrl = input.imageUrl;
+      if (input.image) {
+        const contentType = input.image.match(/data:(.*);base64/)?.[1];
+        const base64FileData = input.image.split("base64,")?.[1];
+
+        if (contentType && base64FileData) {
+          const fileName = nanoid();
+          const ext = contentType.split("/")[1];
+          const path = `${fileName}.${ext}`;
+
+          const { data, error: uploadError } = await supabase.storage
+            .from(env.SUPABASE_BUCKET)
+            .upload(path, decode(base64FileData), {
+              contentType,
+              upsert: true,
+            });
+          if (data) {
+            imageUrl = `${env.SUPABASE_URL.replace(
+              ".co",
+              ".co"
+            )}/storage/v1/object/public/${env.SUPABASE_BUCKET}/${data.path}`;
+          }
+        }
+      }
+      const { name, link, notes, userId } = input;
+      return ctx.prisma.gift.create({
+        data: {
+          name,
+          link,
+          notes,
+          image: imageUrl,
+          userId: userId,
+          suggestedByUserId: ctx.session.user.id,
         },
       });
     }),

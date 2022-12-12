@@ -21,10 +21,12 @@ interface Props {
   loading: boolean;
   initialValues: FormValues;
   setInitialValues: (values: FormValues) => void;
+  title?: string;
 }
 
 export default function GiftForm(props: Props) {
-  const { close, submit, loading, initialValues, setInitialValues } = props;
+  const { close, submit, loading, initialValues, setInitialValues, title } =
+    props;
   const { imageUrl } = initialValues;
 
   const getMetadata = trpc.gifts.getMetadata.useMutation();
@@ -109,7 +111,9 @@ export default function GiftForm(props: Props) {
   return (
     <>
       <div className="mb-6 flex justify-between">
-        <h1 className="text-xl font-medium">Add To Your Wish List</h1>
+        <h1 className="text-xl font-medium text-gray-700">
+          {title ? title : "Add To Your Wish List"}
+        </h1>
         <button
           onClick={close}
           className=" flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#bbb] hover:bg-[#999]"
