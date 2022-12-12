@@ -187,17 +187,17 @@ export default function FriendGifts(props: Props) {
               <div className="mb-8 flex flex-row justify-between">
                 <div className="flex gap-2">
                   <h1
-                    className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium sm:text-base  ${
+                    className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium sm:text-lg  ${
                       !showSuggestedGifts
-                        ? " border-[#86A6C6] text-gray-700"
+                        ? " border-[#86A6C6] text-black"
                         : "border-white text-gray-400 hover:text-gray-500"
                     }`}
                     onClick={() => setShowSuggestedGifts(false)}
                   >{`${userShortName}'s List`}</h1>
                   <h1
-                    className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium  sm:text-base ${
+                    className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium  sm:text-lg ${
                       showSuggestedGifts
-                        ? " border-[#86A6C6] text-gray-700"
+                        ? " border-[#86A6C6] text-black"
                         : "border-white text-gray-400 hover:text-gray-500"
                     }`}
                     onClick={() => setShowSuggestedGifts(true)}
@@ -207,9 +207,8 @@ export default function FriendGifts(props: Props) {
                 </div>
                 <button
                   onClick={toggleForm}
-                  className="active:before: flex h-[35px] w-max items-center justify-center gap-2 rounded-md bg-[#81C784] px-2 text-white hover:bg-[#66BB6A]"
+                  className="active:before: flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#81C784] text-white hover:bg-[#66BB6A]"
                 >
-                  <span className="text-sm">Suggest</span>
                   <Image src={PlusIcon} width={17} height={17} alt="add gift" />
                 </button>
               </div>

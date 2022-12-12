@@ -82,7 +82,7 @@ export default function MyGifts() {
         ) : (
           <>
             <div className="mb-8 flex flex-row justify-between">
-              <h1 className="text-xl font-medium">My Gifts</h1>
+              <h1 className="text-lg font-medium ">My Gifts</h1>
             </div>
             <div className="flex flex-col items-center divide-y">
               {gifts.map((gift) => {
