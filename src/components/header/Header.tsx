@@ -8,7 +8,7 @@ export default function Header() {
       <div className="pl-3 text-2xl font-bold text-[#47596b]">GiftMe</div>
       {sessionData && (
         <button
-          className="mr-4  flex justify-between rounded-md px-2 py-[3px] text-[#47596b] hover:bg-[#86A6C6]"
+          className="mr-2  flex justify-between rounded-md px-2 py-[3px] text-[#47596b] hover:bg-[#86A6C6]"
           onClick={() => signOut()}
         >
           {sessionData.user?.image && (
