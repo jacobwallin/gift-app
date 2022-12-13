@@ -77,20 +77,20 @@ export default function Gift(props: Props) {
             </div>
           )}
 
-          {gift.userId !== sessionData?.user?.id && (
-            <>
-              {gift.claimedByUserId &&
-                gift.claimedByUserId !== sessionData?.user?.id && (
-                  <div className=" w-max self-end rounded-sm bg-gray-400 px-3 text-sm text-white">
-                    Claimed
-                  </div>
-                )}
-            </>
-          )}
           <div className="mt-0 overflow-hidden text-ellipsis  break-all text-sm text-[#aaa] sm:mt-1 sm:text-base">
             {gift.notes}
           </div>
           <div className="justify-self-end text-sm sm:text-base">
+            {gift.userId !== sessionData?.user?.id && (
+              <>
+                {gift.claimedByUserId &&
+                  gift.claimedByUserId !== sessionData?.user?.id && (
+                    <div className="absolute bottom-0 right-0 flex items-center gap-2 rounded-md bg-gray-400 py-1 px-3 text-white ">
+                      Claimed
+                    </div>
+                  )}
+              </>
+            )}
             {deleteGift && (
               <button
                 onClick={() => deleteGift(gift.id)}
