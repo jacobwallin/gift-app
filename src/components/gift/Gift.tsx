@@ -61,10 +61,10 @@ export default function Gift(props: Props) {
             <Image src={GiftIcon} width={50} height={50} alt="gift-image" />
           )}
         </div>
-        <div className="text-md relative grow sm:text-lg">
+        <div className="text-md word relative w-full min-w-0 grow sm:text-lg">
           {gift.link && gift.link !== "" ? (
             <a
-              className="mb-0  max-h-20 text-[#537393] hover:underline"
+              className="mb-0 overflow-hidden text-ellipsis break-all text-[#537393]  hover:underline"
               href={gift.link || ""}
               target="_blank"
               rel="noreferrer"
@@ -72,7 +72,9 @@ export default function Gift(props: Props) {
               {gift.name}
             </a>
           ) : (
-            <div className="mb-0 ">{gift.name}</div>
+            <div className="mb-0 overflow-hidden text-ellipsis  break-all">
+              {gift.name}
+            </div>
           )}
 
           {gift.userId !== sessionData?.user?.id && (
@@ -85,7 +87,7 @@ export default function Gift(props: Props) {
                 )}
             </>
           )}
-          <div className="mt-0 text-sm text-[#aaa] sm:mt-1 sm:text-base">
+          <div className="mt-0 overflow-hidden text-ellipsis  break-all text-sm text-[#aaa] sm:mt-1 sm:text-base">
             {gift.notes}
           </div>
           <div className="justify-self-end text-sm sm:text-base">

@@ -225,11 +225,12 @@ export default function FriendGifts(props: Props) {
                           suggestedBy={{
                             name: gift.suggestedBy?.name?.split(" ")[0] || "",
                             image: gift.suggestedBy?.image || "",
+                            id: gift.suggestedBy?.id || "",
                           }}
                         />
                       );
                     })}
-                    {gifts.length === 0 && (
+                    {suggestedGifts.length === 0 && (
                       <div className="text-[#999]">
                         {`No suggestions have been added for ${userShortName}`}
                       </div>

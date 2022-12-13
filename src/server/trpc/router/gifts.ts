@@ -50,6 +50,7 @@ export const giftRouter = router({
       orderBy: { createdAt: "asc" },
       include: {
         user: true,
+        suggestedBy: true,
       },
     });
   }),
@@ -201,6 +202,20 @@ export const giftRouter = router({
     .mutation(async ({ input, ctx }) => {
       return ctx.prisma.gift.updateMany({
         where: { userId: ctx.session.user.id, id: input.giftId },
+        data: {
+          deletedAt: new Date(),
+        },
+      });
+    }),
+  deleteSuggestion: protectedProcedure
+    .input(
+      z.object({
+        giftId: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.gift.updateMany({
+        where: { suggestedByUserId: ctx.session.user.id, id: input.giftId },
         data: {
           deletedAt: new Date(),
         },

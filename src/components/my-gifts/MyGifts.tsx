@@ -99,6 +99,15 @@ export default function MyGifts() {
                       name: userShortName || "",
                       image: gift.user.image || "",
                     }}
+                    suggestedBy={
+                      gift.suggestedByUserId
+                        ? {
+                            id: gift.suggestedBy?.id || "",
+                            name: gift.suggestedBy?.name?.split(" ")[0] || "",
+                            image: gift.suggestedBy?.image || "",
+                          }
+                        : undefined
+                    }
                   />
                 );
               })}
