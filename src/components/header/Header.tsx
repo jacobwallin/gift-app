@@ -7,15 +7,13 @@ export default function Header() {
     <div className="flex h-12 items-center justify-between">
       <div className="pl-3 text-2xl font-bold text-[#47596b]">GiftMe</div>
       {sessionData && (
-        <div className="flex">
+        <button
+          className="mr-4  flex justify-between rounded-md px-2 py-[3px] text-[#47596b] hover:bg-[#86A6C6] hover:text-white"
+          onClick={() => signOut()}
+        >
           {sessionData.user?.image && (
-            <div className="mr-4 flex items-center justify-center gap-1">
-              <button
-                className="text-sm text-[#47596b] hover:underline"
-                onClick={() => signOut()}
-              >
-                Sign Out
-              </button>
+            <div className=" flex items-center justify-center gap-1">
+              <div className="text-sm ">Sign Out</div>
               <div></div>
               <div className=" overflow-hidden">
                 <Image
@@ -28,7 +26,7 @@ export default function Header() {
               </div>
             </div>
           )}
-        </div>
+        </button>
       )}
     </div>
   );
