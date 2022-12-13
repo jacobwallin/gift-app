@@ -27,6 +27,8 @@ model Gift {
   deletedAt       DateTime?
   claimedByUserId String?
   claimedBy       User?     @relation("Claimed Gifts", fields: [claimedByUserId], references: [id], onDelete: SetNull)
+  suggestedByUserId String?
+  suggestedBy       User?     @relation("Suggested Gifts", fields: [suggestedByUserId], references: [id], onDelete: SetNull)
 }
 
 // Necessary for Next auth
@@ -66,6 +68,7 @@ model User {
   sessions      Session[]
   gifts         Gift[] @relation("Gifts")
   claimedGifts  Gift[] @relation("Claimed Gifts")
+  suggestedGifts  Gift[] @relation("Suggested Gifts")
 }
 
 model VerificationToken {
