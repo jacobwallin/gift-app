@@ -25,7 +25,7 @@ export const giftRouter = router({
         deletedAt: null,
         suggestedByUserId: null,
       },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
     });
   }),
   getAllByUser: protectedProcedure
