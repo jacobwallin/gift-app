@@ -110,8 +110,8 @@ export default function GiftForm(props: Props) {
 
   return (
     <>
-      <div className="mb-6 flex justify-between">
-        <h1 className="text-lg font-medium">
+      <div className="mb-6 flex items-center justify-between">
+        <h1 className="text-base font-medium sm:text-lg">
           {title ? title : "Add To Your Wish List"}
         </h1>
         <button

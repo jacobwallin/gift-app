@@ -39,7 +39,7 @@ export default function GiftRow(props: Props) {
           <Image src={GiftIcon} width={24} height={24} alt="gift-image" />
         )}
       </div>
-      <div className="flex w-full min-w-0 flex-col justify-between">
+      <div className=" w-min-max flex h-full min-h-[83px] w-full min-w-0 flex-1 flex-col justify-between">
         <div className="flex flex-col gap-[2px]">
           <div>
             <div className=" max-h-6 overflow-hidden text-ellipsis whitespace-nowrap text-sm sm:text-lg">
@@ -57,12 +57,6 @@ export default function GiftRow(props: Props) {
           )}
         </div>
         <div className="flex w-full items-end justify-between pr-1 pb-1  ">
-          {/* {suggestedBy && suggestedBy.id !== sessionData?.user?.id && (
-            <div className="text-xs text-gray-500 sm:text-sm ">{`Suggested by ${suggestedBy.name}`}</div>
-          )}
-          {suggestedBy && suggestedBy.id === sessionData?.user?.id && (
-            <div className=" rounded-sm text-xs text-[#86A6C6] sm:text-sm">{`Suggested by You`}</div>
-          )} */}
           {purchasedFor && (
             <div className=" ml-auto flex flex-col items-end rounded-md bg-[#9fbfdf] py-[3px] px-2 text-sm font-normal text-white sm:text-base">
               <div className="flex items-center gap-2">
