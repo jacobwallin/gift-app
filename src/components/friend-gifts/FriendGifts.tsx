@@ -9,11 +9,15 @@ import { RouterOutputs } from "../../utils/trpc";
 import PlusIcon from "../../../public/plus-icon.svg";
 import Image from "next/image";
 
+export type SuggestedGift = RouterOutputs["gifts"]["getAllByUser"][number];
+
 interface Props {
   userId: string;
   userShortName: string;
 }
-
+//TODO: claiming suggested gift
+//TODO: delete suggested gift
+//TODO:
 const initialValues = {
   link: "",
   name: "",
@@ -29,6 +33,7 @@ export default function FriendGifts(props: Props) {
   const claimGiftMutation = trpc.gifts.claim.useMutation();
   const releaseGiftMutation = trpc.gifts.release.useMutation();
   const addSuggestionMutation = trpc.gifts.suggest.useMutation();
+  const deleteSuggestionMutation = trpc.gifts.deleteSuggestion.useMutation();
 
   const [initialFormValues, setInitialFormValues] =
     useState<FormValues>(initialValues);
@@ -40,6 +45,9 @@ export default function FriendGifts(props: Props) {
   >([]);
   const [selectedGift, setSelectedGift] = useState<
     RouterOutputs["gifts"]["create"] | undefined
+  >(undefined);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<
+    SuggestedGift | undefined
   >(undefined);
   const [claimedGiftId, setClaimedGiftId] = useState("");
   const [releasedGiftId, setReleasedGiftId] = useState("");
@@ -66,8 +74,12 @@ export default function FriendGifts(props: Props) {
   function viewGift(gift: RouterOutputs["gifts"]["create"]) {
     setSelectedGift(gift);
   }
+  function viewSuggestion(gift: SuggestedGift) {
+    setSelectedSuggestion(gift);
+  }
   function closeGiftView() {
     setSelectedGift(undefined);
+    setSelectedSuggestion(undefined);
   }
   function claimGift(giftId: string) {
     setClaimedGiftId(giftId);
@@ -88,6 +100,9 @@ export default function FriendGifts(props: Props) {
       ...values,
       userId: userId,
     });
+  }
+  function deleteSuggestion(giftId: string) {
+    deleteSuggestionMutation.mutate({ giftId });
   }
 
   useEffect(() => {
@@ -129,6 +144,12 @@ export default function FriendGifts(props: Props) {
             claimedByUserId: sessionData?.user?.id || null,
           });
         }
+        if (selectedSuggestion) {
+          setSelectedSuggestion({
+            ...selectedSuggestion,
+            claimedByUserId: sessionData?.user?.id || null,
+          });
+        }
       }
     }
   }, [claimGiftMutation.status, claimedGiftId]);
@@ -153,9 +174,26 @@ export default function FriendGifts(props: Props) {
             claimedByUserId: null,
           });
         }
+        if (selectedSuggestion) {
+          setSelectedSuggestion({
+            ...selectedSuggestion,
+            claimedByUserId: null,
+          });
+        }
       }
     }
   }, [releaseGiftMutation.status, releasedGiftId]);
+
+  useEffect(() => {
+    if (deleteSuggestionMutation.status === "success") {
+      if (deleteSuggestionMutation.data.count > 0) {
+        setSuggestedGifts(
+          suggestedGifts.filter((g) => g.id !== selectedSuggestion?.id)
+        );
+      }
+      setSelectedSuggestion(undefined);
+    }
+  }, [deleteSuggestionMutation.status]);
 
   return (
     <>
@@ -173,89 +211,124 @@ export default function FriendGifts(props: Props) {
         <>
           {giftsQuery.isLoading ? (
             <div>loading...</div>
-          ) : selectedGift !== undefined ? (
-            <Gift
-              gift={selectedGift}
-              closeView={closeGiftView}
-              claimGift={claimGift}
-              releaseGift={releaseGift}
-              loadingClaim={claimGiftMutation.isLoading}
-              loadingRelease={releaseGiftMutation.isLoading}
-            />
           ) : (
             <>
-              <div className="mb-8 flex flex-row justify-between">
-                <div className="flex gap-2">
-                  <h1
-                    className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium sm:text-lg  ${
-                      !showSuggestedGifts
-                        ? " border-[#86A6C6] text-black"
-                        : "border-white text-gray-400 hover:text-gray-500"
-                    }`}
-                    onClick={() => setShowSuggestedGifts(false)}
-                  >{`${userShortName}'s List`}</h1>
-                  <h1
-                    className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium  sm:text-lg ${
-                      showSuggestedGifts
-                        ? " border-[#86A6C6] text-black"
-                        : "border-white text-gray-400 hover:text-gray-500"
-                    }`}
-                    onClick={() => setShowSuggestedGifts(true)}
-                  >
-                    Suggestions
-                  </h1>
-                </div>
-                <button
-                  onClick={toggleForm}
-                  className="active:before: flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#81C784] text-white hover:bg-[#66BB6A]"
-                >
-                  <Image src={PlusIcon} width={17} height={17} alt="add gift" />
-                </button>
-              </div>
-              <div className="flex flex-col items-center divide-y">
-                {showSuggestedGifts ? (
-                  <>
-                    {suggestedGifts.map((gift) => {
-                      return (
-                        <GiftRow
-                          key={gift.id}
-                          gift={gift}
-                          view={viewGift}
-                          hideStatus={false}
-                          suggestedBy={{
-                            name: gift.suggestedBy?.name?.split(" ")[0] || "",
-                            image: gift.suggestedBy?.image || "",
-                            id: gift.suggestedBy?.id || "",
-                          }}
-                        />
-                      );
-                    })}
-                    {suggestedGifts.length === 0 && (
-                      <div className="text-[#999]">
-                        {`No suggestions have been added for ${userShortName}`}
-                      </div>
+              {selectedGift !== undefined && (
+                <Gift
+                  gift={selectedGift}
+                  closeView={closeGiftView}
+                  claimGift={claimGift}
+                  releaseGift={releaseGift}
+                  loadingClaim={claimGiftMutation.isLoading}
+                  loadingRelease={releaseGiftMutation.isLoading}
+                />
+              )}
+              {selectedSuggestion !== undefined && (
+                <Gift
+                  gift={{
+                    ...selectedSuggestion,
+                  }}
+                  closeView={closeGiftView}
+                  claimGift={claimGift}
+                  releaseGift={releaseGift}
+                  loadingClaim={claimGiftMutation.isLoading}
+                  loadingRelease={releaseGiftMutation.isLoading}
+                  deleteGift={
+                    selectedSuggestion.suggestedBy?.id === sessionData?.user?.id
+                      ? deleteSuggestion
+                      : undefined
+                  }
+                  suggestedBy={{
+                    id: selectedSuggestion.suggestedBy?.id || "",
+                    name:
+                      selectedSuggestion.suggestedBy?.name?.split(" ")[0] || "",
+                    image: selectedSuggestion.suggestedBy?.image || "",
+                  }}
+                />
+              )}
+
+              {!selectedGift && !selectedSuggestion && (
+                <>
+                  <div className="mb-8 flex flex-row justify-between">
+                    <div className="flex gap-2">
+                      <h1
+                        className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium sm:text-lg  ${
+                          !showSuggestedGifts
+                            ? " border-[#86A6C6] text-black"
+                            : "border-white text-gray-400 hover:text-gray-500"
+                        }`}
+                        onClick={() => setShowSuggestedGifts(false)}
+                      >{`${userShortName}'s List`}</h1>
+                      <h1
+                        className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium  sm:text-lg ${
+                          showSuggestedGifts
+                            ? " border-[#86A6C6] text-black"
+                            : "border-white text-gray-400 hover:text-gray-500"
+                        }`}
+                        onClick={() => setShowSuggestedGifts(true)}
+                      >
+                        Suggestions
+                      </h1>
+                    </div>
+                    <button
+                      onClick={toggleForm}
+                      className="active:before: flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#81C784] text-white hover:bg-[#66BB6A]"
+                    >
+                      <Image
+                        src={PlusIcon}
+                        width={17}
+                        height={17}
+                        alt="add gift"
+                      />
+                    </button>
+                  </div>
+                  <div className="flex flex-col items-center divide-y">
+                    {showSuggestedGifts ? (
+                      <>
+                        {suggestedGifts.map((gift) => {
+                          return (
+                            <GiftRow
+                              key={gift.id}
+                              gift={gift}
+                              view={viewSuggestion}
+                              hideStatus={false}
+                              suggestedBy={{
+                                name:
+                                  gift.suggestedBy?.name?.split(" ")[0] || "",
+                                image: gift.suggestedBy?.image || "",
+                                id: gift.suggestedBy?.id || "",
+                              }}
+                            />
+                          );
+                        })}
+                        {suggestedGifts.length === 0 && (
+                          <div className="text-[#999]">
+                            {`No suggestions have been added for ${userShortName}`}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {gifts.map((gift) => {
+                          return (
+                            <GiftRow
+                              key={gift.id}
+                              gift={gift}
+                              view={viewGift}
+                              hideStatus={false}
+                            />
+                          );
+                        })}
+                        {gifts.length === 0 && (
+                          <div className="text-[#999]">
+                            {`${userShortName} hasn't added any gifts yet`}
+                          </div>
+                        )}
+                      </>
                     )}
-                  </>
-                ) : (
-                  <>
-                    {gifts.map((gift) => {
-                      return (
-                        <GiftRow
-                          key={gift.id}
-                          gift={gift}
-                          view={viewGift}
-                          hideStatus={false}
-                        />
-                      );
-                    })}
-                    {gifts.length === 0 && (
-                      <div className="text-[#999]">
-                        {`${userShortName} hasn't added any gifts yet`}
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
+                  </div>
+                </>
+              )}
             </>
           )}
         </>

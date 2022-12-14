@@ -130,7 +130,7 @@ export default function Main() {
           </div>
         </div>
       </div>
-      <div className="hidden h-min w-[250px] min-w-[250px] flex-col gap-2 rounded-lg  bg-white p-3 shadow-md md:flex">
+      <div className="hidden h-min w-[275px] min-w-[275px] flex-col gap-2 rounded-lg  bg-white p-3 shadow-md md:flex">
         <div
           className={`cursor-pointer rounded-md px-3 py-1 text-xl ${
             selectedView === "MY_LIST"
@@ -206,7 +206,7 @@ function UserListMenuItems(props: UserListMenuItemProps) {
             }`}
           >
             {user.image && (
-              <div>
+              <div className="h-max min-h-max w-max min-w-max">
                 <Image
                   src={user.image}
                   width={35}
@@ -216,7 +216,7 @@ function UserListMenuItems(props: UserListMenuItemProps) {
                 />
               </div>
             )}
-            <div>{`${userShortName}'s List`}</div>
+            <div className="break-all">{`${userShortName}'s List`}</div>
           </div>
         );
       })}
