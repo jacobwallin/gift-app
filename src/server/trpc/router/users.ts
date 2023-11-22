@@ -2,7 +2,7 @@ import { router, protectedProcedure } from "../trpc";
 
 export const userRouter = router({
   getAll: protectedProcedure.query(({ ctx }) => {
-    if (ctx.session.user.email === "fettermann@gmail.com") {
+    if (ctx.session.user.email === "don.wallin@gmail.com") {
       return ctx.prisma.user.findMany({
         where: {
           NOT: [
@@ -15,7 +15,7 @@ export const userRouter = router({
     } else if (ctx.session.user.email === "nancy.zegarski@gmail.com") {
       return ctx.prisma.user.findMany({
         where: {
-          NOT: [{ id: ctx.session.user.id }, { email: "fettermann@gmail.com" }],
+          NOT: [{ id: ctx.session.user.id }, { email: "don.wallin@gmail.com" }],
         },
         orderBy: { name: "asc" },
       });

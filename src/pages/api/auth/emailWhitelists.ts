@@ -1,5 +1,5 @@
 export const emailWhitelist: string[] = [
-  "fettermann@gmail.com",
+  "don.wallin@gmail.com",
   "nancy.zegarski@gmail.com",
   "jacobwallin@gmail.com",
   "samwallin@gmail.com",
