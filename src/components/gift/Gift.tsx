@@ -143,8 +143,9 @@ export default function Gift(props: Props) {
                   )}
                 </button>
                 <div className="text-end text-[10px] text-gray-400 sm:text-xs">
-                  If this gift is claimed, it stays in that user's gift list
-                  even after deletion.
+                  {
+                    "If this gift is claimed, it stays in that user's gift list even after deletion."
+                  }
                 </div>
               </>
             )}
