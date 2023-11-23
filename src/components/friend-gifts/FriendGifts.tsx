@@ -250,25 +250,39 @@ export default function FriendGifts(props: Props) {
               {!selectedGift && !selectedSuggestion && (
                 <>
                   <div className="mb-8 flex flex-row justify-between">
-                    <div className="flex gap-2">
-                      <h1
-                        className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium sm:text-lg  ${
+                    <div className="flex gap-2 ">
+                      <div
+                        className={`flex items-center gap-1 border-b-4 ${
                           !showSuggestedGifts
                             ? " border-[#86A6C6] text-black"
                             : "border-white text-gray-400 hover:text-gray-500"
                         }`}
-                        onClick={() => setShowSuggestedGifts(false)}
-                      >{`${userShortName}'s List`}</h1>
-                      <h1
-                        className={`box-border flex cursor-pointer items-center border-b-4 px-1 text-sm font-medium  sm:text-lg ${
+                      >
+                        <h1
+                          className={`box-border flex cursor-pointer items-center px-1 text-sm font-medium sm:text-lg `}
+                          onClick={() => setShowSuggestedGifts(false)}
+                        >{`${userShortName}'s List`}</h1>
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#86A6C6] text-xs font-medium text-white">
+                          {gifts.length}
+                        </div>
+                      </div>
+                      <div
+                        className={`flex items-center gap-1 border-b-4 ${
                           showSuggestedGifts
                             ? " border-[#86A6C6] text-black"
                             : "border-white text-gray-400 hover:text-gray-500"
                         }`}
-                        onClick={() => setShowSuggestedGifts(true)}
                       >
-                        Suggestions
-                      </h1>
+                        <h1
+                          className={`relative box-border flex cursor-pointer items-center  px-1 text-sm font-medium  sm:text-lg `}
+                          onClick={() => setShowSuggestedGifts(true)}
+                        >
+                          Suggestions
+                        </h1>
+                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#86A6C6] text-xs font-medium text-white">
+                          {suggestedGifts.length}
+                        </div>
+                      </div>
                     </div>
                     <button
                       onClick={toggleForm}
