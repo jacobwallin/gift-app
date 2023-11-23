@@ -149,6 +149,7 @@ export default function GiftForm(props: Props) {
             fetchMetadata={fetchMetadata}
             disabled={getMetadata.isLoading || loading}
             autofillError={getMetadata.isError}
+            note={"(use auto-fill to auto complete item details)"}
           />
           <TextInput
             label="Item Name"
