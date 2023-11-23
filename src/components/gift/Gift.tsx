@@ -130,25 +130,24 @@ export default function Gift(props: Props) {
               </button>
             )}
             {deleteGift && (
-              <button
-                onClick={() => deleteGift(gift.id)}
-                className=" flex w-max grow-0 items-center gap-2 rounded-md bg-red-400 py-1 px-3  text-white hover:bg-red-500"
-              >
-                <Image src={PlusIcon} width={18} height={18} alt="delete" />
-                {suggestedBy?.id === sessionData?.user?.id ? (
-                  <div>Delete Suggestion</div>
-                ) : (
-                  <div>Delete Item</div>
-                )}
-              </button>
-            )}
-            {suggestedBy?.id === sessionData?.user?.id &&
-              gift.claimedByUserId && (
+              <>
+                <button
+                  onClick={() => deleteGift(gift.id)}
+                  className=" flex w-max grow-0 items-center gap-2 rounded-md bg-red-400 py-1 px-3  text-white hover:bg-red-500"
+                >
+                  <Image src={PlusIcon} width={18} height={18} alt="delete" />
+                  {suggestedBy?.id === sessionData?.user?.id ? (
+                    <div>Delete Suggestion</div>
+                  ) : (
+                    <div>Delete Item</div>
+                  )}
+                </button>
                 <div className="text-end text-[10px] text-gray-400 sm:text-xs">
-                  deleting will not remove the item for the user that has
-                  claimed it
+                  If this gift is claimed, it stays in that user's gift list
+                  even after deletion.
                 </div>
-              )}
+              </>
+            )}
           </div>
         </div>
       </div>
