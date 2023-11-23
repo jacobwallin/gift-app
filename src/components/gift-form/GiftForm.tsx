@@ -86,9 +86,15 @@ export default function GiftForm(props: Props) {
 
   useEffect(() => {
     if (getMetadata.status === "success") {
-      const name = getMetadata.data.title || "";
-      const link = getMetadata.data.url || "";
-      const imageUrl = getMetadata.data.image || "";
+      const name = getMetadata.data.result.ogTitle || "";
+      const link = getMetadata.data.result.ogUrl || "";
+      let imageUrl = "";
+      if (
+        getMetadata.data.result.ogImage &&
+        getMetadata.data.result.ogImage[0]
+      ) {
+        imageUrl = getMetadata.data.result.ogImage[0].url;
+      }
       // remove user's image if it exists
       setImage(null);
       setInitialValues({

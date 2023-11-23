@@ -1,11 +1,10 @@
-import { router, protectedProcedure } from "../trpc";
+import { router, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 import { nanoid } from "nanoid";
 import { decode } from "base64-arraybuffer";
 import { env } from "../../../env/server.mjs";
-import metascraper from "metadata-scraper";
-import axios from "axios";
+import ogs from "open-graph-scraper";
 
 const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
 
@@ -84,20 +83,25 @@ export const giftRouter = router({
         },
       });
     }),
-  getMetadata: protectedProcedure
+  getMetadata: publicProcedure
     .input(
       z.object({
         url: z.string().url(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const pageContent = await axios.get(input.url, {
-        headers: {
-          "User-Agent":
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0",
+      const data = await ogs({
+        url: input.url,
+        onlyGetOpenGraphInfo: true,
+        fetchOptions: {
+          // use iMessage user agent
+          headers: {
+            "user-agent":
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/601.2.4 (KHTML, like Gecko) Version/9.0.1 Safari/601.2.4 facebookexternalhit/1.1 Facebot Twitterbot/1.0",
+          },
         },
       });
-      return metascraper({ url: input.url, html: pageContent.data });
+      return data;
     }),
   create: protectedProcedure
     .input(
