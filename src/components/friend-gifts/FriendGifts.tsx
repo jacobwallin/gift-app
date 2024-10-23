@@ -117,6 +117,8 @@ export default function FriendGifts(props: Props) {
             email: sessionData?.user?.email || "",
             image: sessionData?.user?.image || "",
             emailVerified: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
           },
         },
         ...suggestedGifts,
