@@ -7,6 +7,7 @@ export const emailWhitelist: string[] = [
   "kolbewallin01@gmail.com",
   "philomenawallin@gmail.com",
   "cebwallin@gmail.com",
+  "alyssanwallin@gmail.com"
 ];
 
 export const devEmailWhitelist: string[] = [
