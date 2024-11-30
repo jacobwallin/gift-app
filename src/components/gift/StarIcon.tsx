@@ -17,7 +17,7 @@ export default function StarIcon({
         ["hover:fill-[#ffe34d] hover:stroke-[#ffe34d]"]:
           isFavorite && !isRowView,
         ["h-7 w-7 pb-1"]: !isRowView,
-        ["m-[2px] h-5 w-5 sm:m-0 sm:h-6 sm:w-6"]: isRowView,
+        ["m-[2px] h-5 w-5 sm:m-0 sm:mr-[5px] sm:h-6 sm:w-6"]: isRowView,
       })}
     >
       <path
