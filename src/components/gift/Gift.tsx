@@ -5,6 +5,7 @@ import GiftIcon from "../../../public/gift.png";
 import PlusIcon from "../../../public/delete.svg";
 import CloseIcon from "../../../public/close.svg";
 import CheckIcon from "../../../public/check.svg";
+import LinkIcon from "../../../public/external-link.svg";
 import ReleaseIcon from "../../../public/release.png";
 import StarIcon from "./StarIcon";
 
@@ -86,11 +87,19 @@ export default function Gift(props: Props) {
               <div className="flex items-start justify-between">
                 {gift.link && gift.link !== "" ? (
                   <a
-                    className="mb-0 overflow-hidden text-ellipsis text-[#537393]  hover:underline"
+                    className="mb-0 flex items-center gap-1  overflow-hidden text-ellipsis text-[#537393] hover:underline"
                     href={gift.link || ""}
                     target="_blank"
                     rel="noreferrer"
                   >
+                    <span className="pt-[2px]">
+                      <Image
+                        src={LinkIcon}
+                        width={16}
+                        height={16}
+                        alt="gift-image"
+                      />
+                    </span>
                     {gift.name}
                   </a>
                 ) : (
