@@ -91,7 +91,7 @@ const SnowAnimation: React.FC = () => {
               }
               100% {
                 transform: translateY(120vh) rotate(360deg);
-                opacity: 0;
+                opacity: 0.2;
               }
             }
             
