@@ -87,12 +87,12 @@ export default function Gift(props: Props) {
               <div className="flex items-start justify-between">
                 {gift.link && gift.link !== "" ? (
                   <a
-                    className="mb-0 flex items-center gap-1  overflow-hidden text-ellipsis text-[#537393] hover:underline"
+                    className="mb-0  overflow-hidden text-ellipsis text-[#537393] hover:underline"
                     href={gift.link || ""}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span className="pt-[2px]">
+                    <span className="float-left pt-[5px] pr-[4px] sm:pt-[7px]">
                       <Image
                         src={LinkIcon}
                         width={16}
