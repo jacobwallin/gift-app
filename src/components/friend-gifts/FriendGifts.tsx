@@ -15,9 +15,7 @@ interface Props {
   userId: string;
   userShortName: string;
 }
-//TODO: claiming suggested gift
-//TODO: delete suggested gift
-//TODO:
+
 const initialValues = {
   link: "",
   name: "",
@@ -57,7 +55,12 @@ export default function FriendGifts(props: Props) {
   useEffect(() => {
     setGifts(
       giftsQuery.data
-        ? giftsQuery.data.filter((g) => g.suggestedByUserId === null)
+        ? giftsQuery.data
+            .filter((g) => g.suggestedByUserId === null)
+            .sort((gA, gB) => {
+              if (gA.favorite && !gB.favorite) return -1;
+              return 1;
+            })
         : []
     );
     setSuggestedGifts(

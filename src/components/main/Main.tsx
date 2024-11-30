@@ -82,7 +82,9 @@ export default function Main() {
                   />
                 )}
               </div>
-              <div className="font-medium">{selectedMenuItem.title}</div>
+              <div className="text-lg font-medium">
+                {selectedMenuItem.title}
+              </div>
             </div>
             <div
               className={`transition-all ${
@@ -104,7 +106,7 @@ export default function Main() {
                 ? "bg-[#86A6C6] text-white "
                 : "hover:bg-[#ddd]"
             }`}
-            onClick={() => selectMyList()}
+            onClick={selectMyList}
           >
             My List
           </div>
@@ -114,7 +116,7 @@ export default function Main() {
                 ? "bg-[#86A6C6] text-white "
                 : "hover:bg-[#ddd] "
             }`}
-            onClick={() => selectMyGifts()}
+            onClick={selectMyGifts}
           >
             My Gifts
           </div>
@@ -137,7 +139,7 @@ export default function Main() {
               ? "bg-[#86A6C6] text-white "
               : "hover:bg-[#ddd]"
           }`}
-          onClick={() => selectMyList()}
+          onClick={selectMyList}
         >
           My List
         </div>
@@ -147,7 +149,7 @@ export default function Main() {
               ? "bg-[#86A6C6] text-white "
               : "hover:bg-[#ddd] "
           }`}
-          onClick={() => selectMyGifts()}
+          onClick={selectMyGifts}
         >
           My Gifts
         </div>
