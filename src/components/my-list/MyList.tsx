@@ -20,6 +20,7 @@ export default function MyList() {
   const [showForm, setShowForm] = useState(false);
   const giftsQuery = trpc.gifts.getAll.useQuery();
   const mutation = trpc.gifts.create.useMutation();
+  const setFavoriteMutation = trpc.gifts.setFavorite.useMutation();
   const deleteMutation = trpc.gifts.delete.useMutation();
 
   const [initialFormValues, setInitialFormValues] =
@@ -37,6 +38,16 @@ export default function MyList() {
       setGifts([mutation.data, ...gifts]);
     }
   }, [mutation.status]);
+  useEffect(() => {
+    if (setFavoriteMutation.status === "success") {
+      // update gift in list
+      setGifts([
+        setFavoriteMutation.data,
+        ...gifts.filter((g) => g.id !== setFavoriteMutation.data.id),
+      ]);
+      setSelectedGift(setFavoriteMutation.data);
+    }
+  }, [setFavoriteMutation.status]);
   useEffect(() => {
     if (deleteMutation.status === "success") {
       // add new gift to list
@@ -67,6 +78,9 @@ export default function MyList() {
   function deleteGift(giftId: string) {
     deleteMutation.mutate({ giftId });
   }
+  function setFavorite(giftId: string, favorite: boolean) {
+    setFavoriteMutation.mutate({ giftId, favorite });
+  }
 
   return (
     <>
@@ -88,6 +102,7 @@ export default function MyList() {
               gift={selectedGift}
               deleteGift={deleteGift}
               closeView={closeGiftView}
+              setFavorite={setFavorite}
             />
           ) : (
             <>

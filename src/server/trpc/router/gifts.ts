@@ -225,4 +225,22 @@ export const giftRouter = router({
         },
       });
     }),
+  setFavorite: protectedProcedure
+    .input(
+      z.object({
+        giftId: z.string(),
+        favorite: z.boolean(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      return ctx.prisma.gift.update({
+        where: {
+          id: input.giftId,
+          userId: ctx.session.user.id,
+        },
+        data: {
+          favorite: input.favorite,
+        },
+      });
+    }),
 });

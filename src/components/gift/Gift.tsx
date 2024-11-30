@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { RouterOutputs } from "../../utils/trpc";
 import Image from "next/image";
@@ -7,7 +6,7 @@ import PlusIcon from "../../../public/delete.svg";
 import CloseIcon from "../../../public/close.svg";
 import CheckIcon from "../../../public/check.svg";
 import ReleaseIcon from "../../../public/release.png";
-import { giftRouter } from "../../server/trpc/router/gifts";
+import StarIcon from "./StarIcon";
 
 interface Props {
   gift: RouterOutputs["gifts"]["create"];
@@ -15,6 +14,7 @@ interface Props {
   deleteGift?: (giftId: string) => void;
   claimGift?: (giftId: string) => void;
   releaseGift?: (giftId: string) => void;
+  setFavorite?: (giftId: string, favorite: boolean) => void;
   loadingRelease?: boolean;
   loadingClaim?: boolean;
   purchasedFor?: {
@@ -38,6 +38,7 @@ export default function Gift(props: Props) {
     deleteGift,
     claimGift,
     releaseGift,
+    setFavorite,
     loadingClaim,
     loadingRelease,
     purchasedFor,
@@ -49,12 +50,22 @@ export default function Gift(props: Props) {
         <h1 className="text-xl font-medium">
           {purchasedFor ? `Your Gift for ${purchasedFor.name}` : "View Item"}
         </h1>
-        <button
-          onClick={closeView}
-          className=" flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#bbb] hover:bg-[#999]"
-        >
-          <Image src={CloseIcon} width={18} height={18} alt="close" />
-        </button>
+        <div className="flex items-center gap-3">
+          {setFavorite && (
+            <button
+              className="w-max self-end"
+              onClick={() => setFavorite(gift.id, !gift.favorite)}
+            >
+              <StarIcon isFavorite={gift.favorite} />
+            </button>
+          )}
+          <button
+            onClick={closeView}
+            className=" flex h-[35px] w-[35px] items-center justify-center rounded-md bg-[#bbb] hover:bg-[#999]"
+          >
+            <Image src={CloseIcon} width={18} height={18} alt="close" />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-row gap-2 sm:gap-4">
@@ -72,20 +83,22 @@ export default function Gift(props: Props) {
         <div className="text-md word relative flex w-full min-w-0  flex-col justify-between gap-2 sm:text-lg">
           <div className="flex flex-col gap-1 sm:gap-2">
             <div>
-              {gift.link && gift.link !== "" ? (
-                <a
-                  className="mb-0 overflow-hidden text-ellipsis text-[#537393]  hover:underline"
-                  href={gift.link || ""}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {gift.name}
-                </a>
-              ) : (
-                <div className="mb-0 overflow-hidden text-ellipsis  break-all">
-                  {gift.name}
-                </div>
-              )}
+              <div className="flex items-start justify-between">
+                {gift.link && gift.link !== "" ? (
+                  <a
+                    className="mb-0 overflow-hidden text-ellipsis text-[#537393]  hover:underline"
+                    href={gift.link || ""}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {gift.name}
+                  </a>
+                ) : (
+                  <div className="mb-0 overflow-hidden text-ellipsis  break-all">
+                    {gift.name}
+                  </div>
+                )}
+              </div>
 
               <div className="mt-0 overflow-hidden text-ellipsis text-sm text-gray-400 sm:text-base">
                 {gift.notes}
@@ -98,6 +111,7 @@ export default function Gift(props: Props) {
               <div className=" rounded-sm text-xs font-medium text-[#86A6C6] sm:text-sm">{`Suggested by You`}</div>
             )}
           </div>
+
           <div className="flex flex-col items-end gap-1 justify-self-end text-xs sm:text-sm">
             {gift.userId !== sessionData?.user?.id && (
               <>

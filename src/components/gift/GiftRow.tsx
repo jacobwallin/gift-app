@@ -2,8 +2,7 @@ import { RouterOutputs } from "../../utils/trpc";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import GiftIcon from "../../../public/gift.png";
-import { string } from "zod";
-import { GiftWithUser } from "../my-gifts/MyGifts";
+import StarIcon from "./StarIcon";
 
 interface Props {
   gift: RouterOutputs["gifts"]["create"];
@@ -28,7 +27,7 @@ export default function GiftRow(props: Props) {
       className={`relative flex w-full cursor-pointer items-center gap-2 hover:bg-[#eee] sm:gap-4`}
       onClick={() => view(gift)}
     >
-      <div className="relative m-1 flex h-[75px] min-h-[75px] w-[75px] min-w-[75px] items-center justify-center overflow-hidden rounded-sm">
+      <div className="relative m-1 flex h-[75px] min-h-[75px] w-[75px] min-w-[75px] items-center justify-center overflow-hidden rounded-sm sm:h-[100px] sm:min-h-[100px] sm:w-[100px] sm:min-w-[100px]">
         {gift.image ? (
           <img
             src={gift.image}
@@ -39,11 +38,18 @@ export default function GiftRow(props: Props) {
           <Image src={GiftIcon} width={24} height={24} alt="gift-image" />
         )}
       </div>
-      <div className=" w-min-max flex h-full min-h-[83px] w-full min-w-0 flex-1 flex-col justify-between">
+      <div className=" w-min-max flex h-full min-h-[83px] w-full min-w-0 flex-1 flex-col justify-between sm:min-h-[100px]">
         <div className="flex flex-col gap-[2px]">
           <div>
-            <div className=" max-h-6 overflow-hidden text-ellipsis whitespace-nowrap text-sm sm:text-lg">
-              {gift.name}
+            <div className="flex gap-[6px]">
+              <div className=" max-h-6 overflow-hidden text-ellipsis whitespace-nowrap text-sm sm:text-lg">
+                {gift.name}
+              </div>
+              {gift.favorite && (
+                <div className="ml-auto w-max self-end">
+                  <StarIcon isFavorite isRowView />
+                </div>
+              )}
             </div>
             <div className=" overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-500 sm:text-sm">
               {gift.notes}
@@ -56,7 +62,7 @@ export default function GiftRow(props: Props) {
             <div className="rounded-sm text-xs font-medium text-[#86A6C6] sm:text-sm">{`Suggested by You`}</div>
           )}
         </div>
-        <div className="flex w-full items-end justify-between pr-1 pb-1  ">
+        <div className="flex w-full flex-col items-end justify-between gap-[2px] pr-1 pb-1">
           {purchasedFor && (
             <div className=" ml-auto flex flex-col items-end rounded-md bg-[#9fbfdf] py-[3px] px-2 text-sm font-normal text-white sm:text-base">
               <div className="flex items-center gap-2">
@@ -73,6 +79,7 @@ export default function GiftRow(props: Props) {
               </div>
             </div>
           )}
+
           {!hideStatus && (
             <>
               {gift.claimedByUserId &&

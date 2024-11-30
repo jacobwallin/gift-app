@@ -1,37 +1,30 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-  // Further reading:
-  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url      = env("DATABASE_URL")
 }
 
 model Gift {
-  id              String   @id @default(cuid())
-  name            String
-  image           String?
-  link            String?
-  notes           String?
-  userId          String
-  user            User     @relation("Gifts", fields: [userId], references: [id], onDelete: Cascade)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  deletedAt       DateTime?
-  claimedByUserId String?
-  claimedBy       User?     @relation("Claimed Gifts", fields: [claimedByUserId], references: [id], onDelete: SetNull)
+  id                String    @id @default(cuid())
+  name              String
+  image             String?
+  link              String?
+  notes             String?
+  favorite          Boolean   @default(false)
+  userId            String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+  claimedByUserId   String?
   suggestedByUserId String?
-  suggestedBy       User?     @relation("Suggested Gifts", fields: [suggestedByUserId], references: [id], onDelete: SetNull)
+  claimedBy         User?     @relation("Claimed Gifts", fields: [claimedByUserId], references: [id])
+  suggestedBy       User?     @relation("Suggested Gifts", fields: [suggestedByUserId], references: [id])
+  user              User      @relation("Gifts", fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// Necessary for Next auth
 model Account {
   userId            String
   type              String
@@ -44,12 +37,10 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@id([provider, providerAccountId])
 }
 
@@ -57,33 +48,30 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
-
 model User {
-  id            String          @id @default(cuid())
-  name          String?
-  email         String          @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  gifts         Gift[] @relation("Gifts")
-  claimedGifts  Gift[] @relation("Claimed Gifts")
-  suggestedGifts  Gift[] @relation("Suggested Gifts")
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  accounts       Account[]
+  claimedGifts   Gift[]    @relation("Claimed Gifts")
+  suggestedGifts Gift[]    @relation("Suggested Gifts")
+  gifts          Gift[]    @relation("Gifts")
+  sessions       Session[]
 }
 
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
- 
