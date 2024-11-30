@@ -62,7 +62,7 @@ export default function GiftRow(props: Props) {
             <div className="rounded-sm text-xs font-medium text-[#86A6C6] sm:text-sm">{`Suggested by You`}</div>
           )}
         </div>
-        <div className="flex w-full flex-col items-end justify-between gap-[2px] pr-1">
+        <div className="flex w-full flex-col items-end justify-between gap-[2px] pr-1 pb-1 sm:pb-0">
           {purchasedFor && (
             <div className=" ml-auto flex flex-col items-end rounded-md bg-[#9fbfdf] py-[3px] px-2 text-sm font-normal text-white sm:text-base">
               <div className="flex items-center gap-2">
