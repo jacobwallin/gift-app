@@ -6,8 +6,8 @@ import MyList from "../my-list/MyList";
 import FriendsGifts from "../friend-gifts/FriendGifts";
 import MyGifts from "../my-gifts/MyGifts";
 import Image from "next/image";
-import WishListBlackIcon from "../../../public/wish-list-black.png";
 import DropdownWhiteIcon from "../../../public/down-white.png";
+import SnowAnimation from "./SnowAnimation";
 
 type Views = "MY_GIFTS" | "MY_LIST" | "FRIEND_GIFTS";
 
@@ -64,6 +64,7 @@ export default function Main() {
 
   return (
     <div className="mt-6 flex flex-col justify-center gap-2 px-1 md:mt-20 md:flex-row md:gap-5">
+      <SnowAnimation />
       <div className="relative md:hidden">
         <div className=" w-max min-w-[175px] flex-col rounded-lg bg-[#537393] p-1 text-white shadow-md hover:bg-[#395979]">
           <div
